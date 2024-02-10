@@ -1,11 +1,11 @@
 ---
-title: "My title"
+title: "Shaping Future Wealth: Analyzing Lifetime Resources Among Norway's Young Adults (25-40)"
 subtitle: "My subtitle if needed"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
-date: today
+  - Sami El Sabri
+  - Liban Timir
+thanks: "Code and data are available at: https://github.com/samielsabri/reproduce_paper"
+date: 02-13-2024
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
