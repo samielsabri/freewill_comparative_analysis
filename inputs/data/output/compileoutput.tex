@@ -1,0 +1,340 @@
+\documentclass[12pt,english]{article}
+\usepackage{lmodern}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\usepackage{natbib}
+\geometry{verbose,tmargin=2.4cm,bmargin=2.4cm,lmargin=2.4cm,rmargin=2.4cm}
+\usepackage{babel}
+\usepackage{textcomp}
+\usepackage{ifthen}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{setspace}
+\doublespacing
+\usepackage[unicode=true]{hyperref}
+\usepackage[bottom]{footmisc}
+%for tables
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{rotating}
+\usepackage{csquotes}
+\usepackage{placeins}
+\usepackage{subfig}
+
+\begin{document}
+\title{Replication output for Intergenerational Persistence in Child Mortality}
+\maketitle
+
+\pagebreak
+\setcounter{page}{1}
+
+\FloatBarrier
+\section{Main tables and figures}
+
+%%%%%%%
+% Table 1
+%%%%%%%
+\begin{table}
+\begin{center}
+\caption{Descriptive Statistics, Women Aged 20-49}
+\label{table:sumstats}
+\input{sumstat.tex}
+\end{center}
+\footnotesize{Note: Sample includes women with at least one sibling ever born from 119 Demographic and Health Surveys in 44 countries. Sampling weights are rescaled to reflect each survey's contribution to the sample.} 
+\end{table}
+
+%%%%%%%
+% Figure 1
+%%%%%%%
+\begin{figure}[t]
+    \caption{Share with Any Child Death, by Any Sibling Death}
+    \label{figure:shares}
+    \begin{center}
+    \includegraphics[scale=1]{summary_plot_shares.pdf}
+    \end{center}
+
+\footnotesize{Note: For each five-year age group, we plot the share of women with at least one child death separately for women with and without deceased siblings. The within-survey component is the weighted average of the difference in shares within in each survey. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{figure}
+
+%%%%%%%
+% Table 2
+%%%%%%%
+\begin{table}[t]
+\begin{center}
+\caption{Pooled Estimates of Mortality Persistence}
+\label{table:main}
+\subfloat[A. Indicator of sibling death]{
+{\resizebox{\textwidth}{!}{\input{u5_anysibs_full_nostar}}}
+}
+\par
+\subfloat[B. Count of sibling deaths]{
+{\resizebox{\textwidth}{!}{\input{u5_numsibs_full_nostar}}}
+}
+
+\end{center}
+\footnotesize{Note: The reported estimates are logit odds ratios and Poisson incidence rate ratios. Brackets contain standard errors clustered at the survey cluster level. AME refers to the average marginal effect of sibling death(s); in the woman-level models, it is computed at age 49. All models include survey indicators. Woman-level models also include indicators for the woman's age in single years. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{table}
+
+%%%%%%%
+% Table 3
+%%%%%%%
+
+\begin{table}[t]
+\begin{center}
+\caption{Adding Covariates}
+\label{table:mediators}
+
+\subfloat[A. All]{
+{\resizebox{0.5\textwidth}{!}{\input{covariates_full.tex}}}
+}
+\par
+\subfloat[B. Non-migrants]{
+{\resizebox{0.5\textwidth}{!}{\input{covariates_nonmigrants.tex}}}
+}
+\par
+\subfloat[C. Height]{
+{\resizebox{0.5\textwidth}{!}{\input{covariates_height.tex}}}
+}
+
+\end{center}
+\footnotesize{Note: This table reports odds ratios from birth-level logit regressions of under-5 child death on the number of under-5 sibling deaths, the number of siblings ever born, and the indicated explanatory variables. We omit clusters lacking variation in child mortality. Migrant status is available in 77 surveys; height is available in 103. Socioeconomic variables include maternal education and a wealth index based on principal component analysis over a vector of durable goods ownership indicators. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{table}
+
+%%%%%%%
+% Table 4
+%%%%%%%
+\begin{table}
+\begin{center}
+\caption{Panel Analyses of Mortality Persistence over the Mortality Transition}
+\label{table:panel}
+\resizebox{\textwidth}{!}{
+\input{aggregates_nostar.tex}
+}
+\end{center}
+\footnotesize{Note: Each observation is a country-period cell. The dependent variable is the cell-specific mortality persistence odds ratio (OR) or average marginal effect (AME) estimated from a birth-level logit regression of under-5 death on the mother's number of under-5 sibling death, the mother's number of siblings ever born, and survey indicators. All cell-level regressions include country and period fixed effects. Brackets contain standard errors clustered at the country level.}
+\end{table}
+
+\FloatBarrier
+\section{Appendix}
+\renewcommand\thetable{A.\arabic{table}}    
+\setcounter{table}{0}  
+
+
+%%%%%%%
+% Table A.1
+%%%%%%%
+\begin{table}
+\begin{center}
+\caption{Demographic and Health Surveys in the Sample}
+\label{table:surveylist}
+\input{surveylist_countryyears_sample}
+\end{center}
+\end{table}
+
+%%%%%%%
+% Table A.2
+%%%%%%%
+\textbf{This table is not automated. The user can copy the estimates from the analysis code.}
+\begin{table}
+\begin{center}
+\caption{Partial Correlations of Sibling and Child Under-5 Mortality, Women Aged 45-49}
+\label{table:correlations}
+\begin{tabular}{l c c}
+\toprule
+                &\multicolumn{1}{c}{\shortstack{Any child death and\\any sibling death}}&\multicolumn{1}{c}{\shortstack{\# child deaths and\\ \# sibling deaths}}\\\cmidrule(lr){2-2}\cmidrule(lr){3-3}
+                &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}\\
+\midrule
+Within-survey correlation &    XX &    XX \\
+                &  &  \\
+Number of observations  &       XX &   XX   \\
+\bottomrule
+\end{tabular}
+\end{center}
+\footnotesize{Note: Partial correlations are computed after conditioning on survey indicators. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{table}
+
+
+%%%%%%%
+% Table A.3
+%%%%%%%
+\begin{table}
+\begin{center}
+\caption{Mothers' vs. Daughters' Reports of Any Under-5 Death}
+\label{table:daughter_vs_mom_any}
+\begin{tabular}{l*{4}{c}}
+\toprule
+\input{momdaughter_any.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+\footnotesize{Note: Sample includes coresident 15-19 year olds and their 30-49 year old mothers when both responded to the survey. Mothers and daughters are interviewed separately and privately. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{table}
+
+
+%%%%%%%
+% Table A.4
+%%%%%%%
+\begin{table}
+\begin{center}
+\caption{Mothers' vs. Daughters' Reports of Any Under-5 Death}
+\label{table:daughter_vs_mom_count}
+
+\begin{tabular}{l*{9}{c}}
+\toprule
+\input{momdaughter_count.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+\footnotesize{Note: Sample includes coresident 15-19 year olds and their 30-49 year old mothers when both responded to the survey. Mothers and daughters are interviewed separately and privately. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{table}
+
+%%%%%%%
+% Table A.5
+%%%%%%%
+\begin{table}
+\begin{center}
+\caption{Pooled Birth-Level Logit Estimations by Gender}
+\label{table:main_bygender}
+\input{u5_bygender.tex}
+\end{center}
+\footnotesize{Note: The reported estimates are logit odds ratios. Brackets contain standard errors clustered at the survey cluster level. AME refers to the average marginal effect of the indicated measure of sibling death(s). All models include survey indicators. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{table}
+
+\renewcommand\thefigure{A.\arabic{figure}}    
+\setcounter{figure}{0}
+
+%%%%%%%
+% Figure A.1
+%%%%%%%
+\begin{figure}
+    \caption{Sibship Size and Sibling Mortality}
+    \label{figure:sibsizemort}
+    \begin{center}
+    \includegraphics[scale=1]{sibsize_mort.pdf}
+    \end{center}
+\footnotesize{Note: This figure plots the relationship between sibship size and sibling mortality rates. The unit of observation is the survey-sibsize cell. We regress the sibling under-5 mortality rate on sibship size indicators and survey indicators. Mortality rates are scaled from 0 to 1. Cells are weighted by the number of women. Spikes are 95\% confidence intervals based on standard errors clustered at the country level. Sampling weights are rescaled to reflect each survey's contribution to the cell.}
+\end{figure}
+
+%%%%%%%
+% Figure A.2
+%%%%%%%
+\begin{figure}
+    \caption{Log Odds of Any Child Death, by Any Sibling Death}
+    \label{figure:logodds}
+    \begin{center}
+    \includegraphics[scale=1.25]{summary_plot_logodds.pdf}
+    \end{center}
+\footnotesize{Note: For each five-year age group, we plot the log odds of any under-5 child death separately for women with and without deceased siblings. The within-survey component is calculated in log odds using the within-survey component and share of women with no sibling deaths in Figure \ref{figure:shares}. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{figure}
+
+%%%%%%%
+% Figure A.3
+%%%%%%%
+\begin{figure}
+    \caption{Mother-Level Logit Results by Age}
+    \label{figure:logitbyage}
+    \begin{center}
+    \includegraphics[scale=1.2]{logit_by_age.pdf}
+    \end{center}
+\footnotesize{Note: This figure demonstrates the robustness of the woman-level logit estimates to age specific estimations. Point estimates and 95\% confidence intervals based on women-level logit regressions of any under-5 child death on any under-5 sibling death. All regressions include survey indicators and single-year age indicators. Pooled estimations include women of all ages; age-specific estimations are separate for each five-year age group. Average marginal effects are computed for the final age in each age interval; confidence intervals are based on standard errors computed using the delta method. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{figure}
+
+%%%%%%%
+% Figure A.4
+%%%%%%%
+\begin{figure}
+    \caption{Comparison with Other Under-5 Mortality Differentials}
+    \label{figure:gradients}
+    \begin{center}
+    \includegraphics[scale=1.2]{gradients.pdf}
+    \end{center}
+\footnotesize{Note: The top panel presents point estimates and 95\% confidence intervals of odds ratios from four woman-level logit regressions of any under-5 child death  on the indicated categorical variables in the figure. All regressions include survey indicators and single-year age indicators. The bottom panel presents histograms of the categorical variables. Sampling weights are rescaled to reflect each survey's contribution to the sample.}
+\end{figure}
+
+%%%%%%%
+% Figure A.5
+%%%%%%%
+\begin{sidewaysfigure}
+    \caption{Robustness to Survey-by-Age Group Effects}
+    \label{figure:surveyXagegroup}
+    \begin{center}
+    \includegraphics[scale=1.5]{surveyXagegroup.pdf}
+    \end{center}
+\footnotesize{Note: We add survey-by-age group indicators to each regression from Table \ref{table:main}. We report the new estimates alongside the original estimates from Table \ref{table:main}. Spikes represent 95\% confidence intervals}
+\end{sidewaysfigure}
+
+%%%%%%%
+% Figure A.6
+%%%%%%%
+\begin{sidewaysfigure}
+    \caption{Monte Carlo Simulations of Measurement Error}
+   \label{figure:measurement}
+  \begin{center}
+\includegraphics[scale=1.5]{simulation.pdf}
+ \end{center}
+\footnotesize{Note: This figure reports the impact of simulated measurement error on our mortality persistence estimates. We simulate the omission of reported deceased siblings for different probabilities of omission. For each positive probability, we draw the number of omitted deceased siblings from a binomial distribution 50 times. We estimate each regression from Table \ref{table:main} in each simulated dataset. We plot the mean exponentiated coefficient (odds ratio or incidence rate ratio) across the 50 draws. At p = 0, we plot the result from Table \ref{table:main}, with no simulated measurement error.}
+\end{sidewaysfigure}
+
+%%%%%%%
+% Figure A.7
+%%%%%%%
+\begin{figure}
+    \caption{Mortality Persistence by Country}
+    \label{figure:countrylevel}
+    \begin{center}
+    \includegraphics[scale=2]{dot_whiskers.pdf}
+    \end{center}
+\footnotesize{Note: This figure reports mortality persistence estimates for each country in our sample. The plotted estimates are odds ratios from birth-level logit regressions of under-5 death on the mother's number of under-5 sibling deaths. All regressions include the mother's number of siblings ever born and survey indicators. Spikes represent 95\% confidence intervals based on standard errors clustered at the survey cluster level. Sampling weights are rescaled to reflect each survey's contribution to each country sample.}
+\end{figure}
+
+%%%%%%%
+% Figure A.8
+%%%%%%%
+\begin{figure}
+    \caption{Absolute Versus Proportional Mortality Persistence for a Binary Risk Factor}
+    \label{figure:meVSor}
+    \begin{center}
+    \includegraphics[scale=1]{me_VS_or.pdf}
+    \end{center}
+\footnotesize{Note: Each ray from the origin specifies the relationship between the marginal effect and the odds ratio for a binary risk factor (e.g., any sibling death) at a given level of baseline mortality risk. At higher baseline mortality risk, a given odds ratio translates to a larger marginal effect. The mortality decline trajectories demonstrate possible paths for the odds ratio and marginal effect as mortality falls.}
+\end{figure}
+
+%%%%%%%
+% Figure A.9
+%%%%%%%
+\begin{sidewaysfigure}
+    \caption{Under-5 Mortality Rate over Time, by Country}
+    \label{figure:u5series}
+    \begin{center}    
+    \includegraphics[scale=1.6]{q5_series.pdf}
+    \end{center}
+Note: Rates are scaled from 0 to 1.
+\end{sidewaysfigure}
+
+%%%%%%%
+% Figure A.10
+%%%%%%%
+\begin{figure}
+    \caption{Semi-Parametric Panel Analyses}
+    \label{figure:semiparm}
+    \begin{center}
+    \includegraphics[scale=1.5]{semiparametric_cells.pdf}
+    \end{center}
+\footnotesize{Note: The figure replicates Table \ref{table:panel}, columns (1) and (5), but with under-5 mortality separated into 6 bins. The point estimates are the coefficients for 5 bin indicators, leaving out the lowest as the reference category. Spikes are 95\% confidence intervals based on standard errors clustered at the country level. OR is the odds ratio. AME is the average marginal effect. Each panel represents a separate cell-level regression including country and period fixed effects. Panel A corresponds to Table \ref{table:panel}, column (1), while the Panel B corresponds to Table \ref{table:panel}, column (3).}
+\end{figure}
+
+%%%%%%%
+% Figure A.11
+%%%%%%%
+\begin{figure}
+    \caption{Leave-One-Out Panel Analyses}
+    \label{figure:leaveout}
+    \includegraphics[scale=1.45]{leave_one_out.pdf}
+
+\footnotesize{Note: This figure replicates Table \ref{table:panel}, columns (1) and (5), leaving out one country at a time. The point estimates report the cell-level association of the under-5 mortality rate with the intergenerational persistence of under-5 mortality, net of country fixed effects and period fixed effects. Spikes are 95\% confidence intervals based on standard errors clustered at the country level. OR is the odds ratio. AME is the average marginal effect. The left-hand panel corresponds to Table \ref{table:panel}, column (1), while the right-hand panel corresponds to Table \ref{table:panel}, column (3).}
+\end{figure}
+
+
+
+
+\end{document}
