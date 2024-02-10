@@ -1,5 +1,5 @@
 ---
-title: "Shaping Future Wealth: Analyzing Lifetime Resources Among Norway's Young Adults (25-40)"
+title: "Echoes Through Generations: The Permanence of Child Mortality in Moroccan Lineages"
 subtitle: "My subtitle if needed"
 author: 
   - Sami El Sabri
@@ -18,12 +18,25 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+install.packages("gitcreds")
+
 library(tidyverse)
 library(palmerpenguins)
+library("gitcreds")
+
+gitcreds_set()
 ```
 
 
 # Introduction
+As nations strive to improve child health outcomes, understanding the intergenerational persistence of child mortality provides crucial insights into the effectiveness of public health interventions. This paper zeroes in on Morocco, a context within the broader scope of 44 developing countries analyzed by Lu and Vogl, to explore this phenomenon in detail. Our focus is on delineating the nuanced patterns of child mortality across generations within Moroccan families and assessing the broader socio-economic and public health implications.
+
+Lu and Vogl’s study uncovers a potent and persistent connection between the child mortality experiences of grandmothers and their daughters, drawing on data from 119 Demographic and Health Surveys. In Morocco, the analysis sought to fill the critical gap in understanding the specific magnitude and characteristics of this relationship. The estimands in the study are primarily odds ratios and incidence rate ratios, which provide a measure of the relationship between a mother's experience of sibling death in childhood and her own child's mortality risk. In addition to these, the researchers computed average marginal effects to capture the absolute persistence of child mortality risk. By employing robust statistical techniques and controlling for potential confounders, this paper aims to provide a clear picture of intergenerational child mortality trends within Moroccan society.
+
+The methodology involved detailed regression analyses to ascertain the influence of familial, socio-economic, and geographical factors on child mortality rates. By dissecting this data, the study found evidence of a significant risk in child mortality that transcends generations, which remained substantial even after accounting for various covariates. The implications of these findings are profound, as they not only shed light on the persistent nature of health disparities but also challenge the prevailing narrative of universal health improvement. Understanding the roots and resilience of these disparities is crucial for the development of effective health policies and interventions.
+
+The paper is structured to first present the context and motivation for focusing on Morocco, followed by a description of the data and methodology. Subsequent sections discuss the results, their significance, and implications for Moroccan public health policies. Finally, the paper concludes with recommendations for future research and policy considerations, underscoring the need for targeted strategies to disrupt the cycle of intergenerational child mortality.
+
 
 You can and should cross-reference sections and sub-sections. 
 
