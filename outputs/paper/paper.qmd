@@ -1,10 +1,10 @@
 ---
 title: "The Power of Liberty in the American Workplace: Unveiling the Global Impact of Free Will Perceptions on Job Satisfaction"
-subtitle: "My subtitle if needed"
+subtitle: "Nowhere near done yet! We had significant issues with our last dataset and had to restart, so bare with us."
 author: 
   - Sami El Sabri
   - Liban Timir
-thanks: "Code and data are available at: https://github.com/samielsabri/reproduce_paper"
+thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis"
 date: 02-13-2024
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
@@ -18,11 +18,8 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
-install.packages("ggplot2")
-
 library(ggplot2)
 
-gitcreds_set()
 ```
 
 
@@ -46,7 +43,7 @@ The dataset for the study provides a detailed snapshot of free will beliefs, job
 
 The variables within this dataset were carefully selected to reflect key indicators of job satisfaction, belief in free will, job autonomy, and additional agency constructs for regional analysis within America. 
 
-Data cleaning was especially important in this case, considering the challenges inherent in longitudinal and generational health data. This ensured the integrity and continuity of data across different time points and handling any missing or inconsistent records. The dataset underwent meticulous cleaning, addressing missing values and ensuring consistency across responses. Special attention was given to the reliability of scales used for measuring the core variables, with adjustments made to account for the online work setting of the participants.
+Data cleaning was especially important in this case, considering the challenges inherent in longitudinal and generational health data. This ensured the integrity and continuity of data across different time points and handling any missing or inconsistent records. The dataset underwent meticulous cleaning using R [@citeR], addressing missing values and ensuring consistency across responses. Special attention was given to the reliability of scales used for measuring the core variables, with adjustments made to account for the online work setting of the participants.
 
 Summary statistics revealed the mean and median job satisfaction rates, the correlation in job autonomy, and other job-related metrics. This aggregated data provided a foundation for understanding the base conditions of the workplace and any preliminary patterns indicating the persistence of individual agency.
 
@@ -56,35 +53,14 @@ The appendices include detailed statistical tables, additional graphs showing co
 
 This description of the dataset was written with the general ethical practices of demographic research in mind and provides a narrative for a subset of data focused on America.
 
-The precise quantification of child mortality rates captured not only the incidence of deaths but also the timing and causes. This entailed using measurement techniques and standard demographic health indicators like the under-five mortality rate (U5MR) or neonatal mortality rate (NMR), which are internationally recognized measures.
-
-Socioeconomic status was gauged using a composite index combining variables such as income, education, and occupation. These measurements were tailored to the Moroccan context to accurately reflect local economic conditions and societal structures.
-
-Demographic characteristics were measured using standard metrics such as age, sex, household size, and variables that capture migration or urban-rural residency, given Morocco's diverse landscape from bustling cities to rural areas.
-
-Measurement in this dataset was meticulous to ensure comparability across generations. For example, the paper needed to account for changes over time in how mortality or socioeconomic status is recorded and reported within Morocco. The potential for measurement error or bias would necessitate rigorous validation techniques, such as cross-referencing with other data sources or conducting field verifications.
-
-The dataset also included constructed variables, which are derived from raw data through transformations or computations to better capture the concepts under study. For instance, a constructed variable might be a mortality risk score that combines the number of sibling deaths with the ages at which they occurred.
-
-In the context of Morocco, the discussion of measurement would also address the cultural and linguistic considerations in the data collection process. Questionnaires and surveys needed to be accurately translated and culturally adapted to ensure the measurement is valid and reliable across different Moroccan communities.
-
-Incorporating a thorough discussion of measurement in relation to the dataset is essential to validate the paper's findings and to ensure that conclusions drawn are based on accurate and reliable data. This discussion would ultimately contribute to the paper's credibility and the robustness of its policy recommendations for Morocco.
 
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
 ```{r}
 #| label: fig-bills
 #| fig-cap: Bills of penguins
 #| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
 ```
 
 Talk more about it.
@@ -98,80 +74,11 @@ And also planes (@fig-planes). (You can change the height and width, but don't w
 #| warning: false
 #| message: false
 
-analysis_data <- read_csv(here::here("outputs/data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
 ```
 
 Talk way more about it. 
 
 
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("outputs/models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
 
 
 
@@ -217,37 +124,9 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 #| fig-cap: "Examining how the model fits, and is affected by, the data"
 #| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
 
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
 ```
 
-## Diagnostics
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
 
 
 

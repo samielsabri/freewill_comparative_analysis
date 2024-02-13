@@ -1,6 +1,6 @@
 #### Preamble ####
-# Purpose: Replicate Figures and Tables
-# Author: Sami El Sabri, Liban Timir
+# Purpose: Replicate Table 1 of Feldman et al. (2017)
+# Authors: Sami El Sabri, Liban Timir
 # Date: 10 February 2023
 # Contact: sami.elsabri@mail.utoronto.ca
 # License: MIT
@@ -11,14 +11,13 @@ library(tidyverse)
 library(psych)
 library(ggplot2)
 library(knitr)
+library(haven)
 
 #### Read data ####
 satisfaction_data <- read_csv("inputs/data/study_1/FW satisfaction-Study 1-data.csv")
 
 # Clean data #
-# satisfaction_data <- satisfaction_data %>% select(freewill, JS, W2JS)
 
-# visualize data #
 
 satisfaction_data_summary <- satisfaction_data %>% summarize(mean_freewill = round(mean(freewill, na.rm = TRUE),2), 
                                                              mean_js1 = round(mean(JS, na.rm = TRUE),2),
@@ -29,7 +28,8 @@ satisfaction_data_summary <- satisfaction_data %>% summarize(mean_freewill = rou
 
 satisfaction_data_cor_matrix <- cor(satisfaction_data[, c("freewill", "JS", "W2JS")], use = "complete.obs")
 satisfaction_data_cor_matrix <- round(satisfaction_data_cor_matrix, 3)
-# satisfaction_data_cor_matrix <- as.data.frame(satisfaction_data_cor_matrix[lower.tri(satisfaction_data_cor_matrix)])
+
+# visualize data #
 
 freewill_items <- satisfaction_data[, c("A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18")]
 alpha_freewill <- alpha(freewill_items)
@@ -46,7 +46,7 @@ alpha_js2 <- alpha(js2_items)
 alpha_js2 <- alpha_js2$total$raw_alpha
 alpha_js2 <- round(alpha_js2,2)
 
-final_table <- data.frame(
+final_table_study_1 <- data.frame(
   Variable = c("Belief in Free Will (T1)", "Job Satisfaction (T1)", "Job Satisfaction (T2)"),
   "Reliability Coefficient" = c(alpha_freewill, alpha_js1, alpha_js2),
   Mean = c(satisfaction_data_summary$mean_freewill, 

@@ -1,26 +1,22 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Downloads and saves the data necessary
+# Authors: Sami El Sabri, Liban Timir
+# Date: 10 February 2023
+# Contact: sami.elsabri@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Download 1.3GB large file titled 'WVS TimeSeries 1981 2022 Csv v4 0.zip' from 
+# https://www.worldvaluessurvey.org/WVSDocumentationWVL.jsp
 
 
 #### Workspace setup ####
-library(opendatatoronto)
 library(tidyverse)
-# [...UPDATE THIS...]
 
 #### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
+
+# wvs_data <- read_csv("inputs/data/study_3/WVS_TimeSeries_4_0.csv")
+# This file is too big to add to this folder and to github. 
+# Follow above instructions and add the file to the specified filepath
 
 
-
-#### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
 
          

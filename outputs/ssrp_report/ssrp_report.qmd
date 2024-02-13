@@ -1,18 +1,118 @@
-#### Preamble ####
-# Purpose: Replicate Table 2 of Feldman et al. (2017)
-# Authors: Sami El Sabri, Liban Timir
-# Date: 10 February 2023
-# Contact: sami.elsabri@mail.utoronto.ca
-# License: MIT
+---
+title: "SSRP Report based on *Agency Beliefs Over Time and Across Cultures: Free Will Beliefs Predict Higher Job Satisfaction* by Feldman et al. (2017)
+ "
+author: Sami El Sabri and Liban Timir
+thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis"
+date: 02-13-2024
+date-format: long
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
 
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+#### Loading Packages ####
 library(tidyverse)
-library(ggplot2)
 library(psych)
-library(knitr)
 library(haven)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(countrycode)
+```
 
-satisfaction_data_usa <- read_csv("inputs/data/study_2/FW satisfaction-Study 2-data.csv")
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
 
+# Loading the cleaned data
+satisfaction_data_taiwan <- read_csv(here::here("inputs/data/study_1/FW satisfaction-Study 1-data.csv"))
+satisfaction_data_usa <- read_csv(here::here("inputs/data/study_2/FW satisfaction-Study 2-data.csv"))
+wvs_data <- read_csv(here::here("inputs/data/study_3/wvs_filtered.csv"))
+
+```
+
+# Report
+
+Using the R programming language (@citeR) and the tidyverse (@citetidyverse), psych (@citepsych), countrycode (@citecc) and kableExtra (@citeknitr) packages, three figures from *Agency Beliefs Over Time and Across Cultures: Free Will Beliefs Predict Higher Job Satisfaction*  by Fraga and Miller (2022) were replicated.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-1
+#| tbl-cap: "Replication of Table 1 from Feldman et al. (2017)"
+
+# Clean data for Table 1
+satisfaction_data_summary <- satisfaction_data_taiwan %>% summarize(mean_freewill = round(mean(freewill, na.rm = TRUE),2), 
+                                                             mean_js1 = round(mean(JS, na.rm = TRUE),2),
+                                                             mean_js2 = round(mean(W2JS, na.rm = TRUE),2),
+                                                             sd_freewill = round(sd(freewill,  na.rm = TRUE),2),
+                                                             sd_js1 = round(sd(JS, na.rm = TRUE),2),
+                                                             sd_js2 = round(sd(W2JS,  na.rm = TRUE),2))
+
+satisfaction_data_cor_matrix <- cor(satisfaction_data_taiwan[, c("freewill", "JS", "W2JS")], use = "complete.obs")
+satisfaction_data_cor_matrix <- round(satisfaction_data_cor_matrix, 3)
+
+# visualize data #
+
+freewill_items <- satisfaction_data_taiwan[, c("A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18")]
+alpha_freewill <- alpha(freewill_items)
+alpha_freewill <- alpha_freewill$total$raw_alpha
+alpha_freewill <- round(alpha_freewill,2)
+
+js1_items <- satisfaction_data_taiwan[, c("G124", "G125", "G126")]
+alpha_js1 <- alpha(js1_items)
+alpha_js1 <- alpha_js1$total$raw_alpha
+alpha_js1 <- round(alpha_js1,2)
+
+js2_items <- satisfaction_data_taiwan[, c("W2E87", "W2E88", "W2E89")]
+alpha_js2 <- alpha(js2_items)
+alpha_js2 <- alpha_js2$total$raw_alpha
+alpha_js2 <- round(alpha_js2,2)
+
+final_table_study_1 <- data.frame(
+  Variable = c("Belief in Free Will (T1)", "Job Satisfaction (T1)", "Job Satisfaction (T2)"),
+  Alpha = c(alpha_freewill, alpha_js1, alpha_js2),
+  Mean = c(satisfaction_data_summary$mean_freewill, 
+           satisfaction_data_summary$mean_js1, 
+           satisfaction_data_summary$mean_js2),
+  SD = c(satisfaction_data_summary$sd_freewill, 
+         satisfaction_data_summary$sd_js1, 
+         satisfaction_data_summary$sd_js2),
+  'Belief in\nFree Will (T1)' = c(NA, satisfaction_data_cor_matrix[1,2], satisfaction_data_cor_matrix[1,3]),
+  "Job\nSatisfaction (T1)" = c(NA, NA, satisfaction_data_cor_matrix[2,3]),
+  "Job\nSatisfaction (T2)" = c(NA, NA, NA),
+  check.names = FALSE
+)
+
+final_table_s1_formatted <- final_table_study_1 %>%
+  kable("latex", booktabs = TRUE, escape = FALSE, linesep = "") %>% 
+  kable_styling(latex_options = c("striped", "hold_position"), font_size = 10) %>% 
+   column_spec(1, width="2cm") %>% 
+  column_spec(2, width="2cm") %>% 
+   column_spec(3, width="2cm") %>% 
+  column_spec(4, width="2cm") %>% 
+  column_spec(5, width="2cm") %>% 
+  column_spec(6, width="2cm") %>% 
+   column_spec(7, width="2cm")
+
+
+final_table_s1_formatted
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-2
+#| tbl-cap: "Replication of Table 2 from Feldman et al. (2017)"
 
 satisfaction_data_usa_summary <- satisfaction_data_usa %>% 
   summarize(
@@ -101,7 +201,7 @@ alpha_jaut2 <- round(alpha_jaut2,2)
 
 
 ## Construct Final Table
-final_table <- data.frame(
+final_table_s2 <- data.frame(
   Variable = c("Job Satisfaction (T1)", "Job Satisfaction (T2)", "Belief in Free Will (T1)",
                "Job Autonomy (T1)", "Job Autonomy (T2)", "Locus of Control", "Implicit Beliefs",
                "Self-Esteem", "Self-Efficacy", "Self-Control"),
@@ -174,5 +274,59 @@ final_table <- data.frame(
                           
   check.names = FALSE
 )
+final_table_s2_formatted <- final_table_s2 %>%
+kable("latex", booktabs = TRUE, escape = FALSE, linesep = "") %>% 
+  kable_styling(latex_options = c("striped", "hold_position"), font_size = 10) %>% 
+    column_spec(1, width="2cm") %>% 
+  column_spec(2, width="1.5cm") %>% 
+   column_spec(3, width="0.5cm") %>% 
+  column_spec(4, width="0.5cm") %>% 
+  column_spec(5, width="1.5cm") %>% 
+  column_spec(6, width="1.5cm") %>% 
+   column_spec(7, width="1.5cm") %>% 
+  column_spec(8, width="1.5cm")
 
 
+final_table_s2_formatted
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-3
+#| tbl-cap: "Replication of Table 4 from Feldman et al. (2017)"
+
+#### Read data ####
+
+wvs_summary_table <- wvs_data %>% group_by(country_code) %>% 
+  summarize("FW Mean"=round(mean(freewill),2), n=n())
+
+wvs_filtered_2 <- wvs_data %>% filter(js > 0)
+
+correlations <- wvs_filtered_2 %>%
+  group_by(country_code) %>%
+  do(correlation = cor(.$freewill, .$js, use = "complete.obs"))
+
+correlations <- wvs_filtered_2 %>%
+  group_by(country_code) %>%
+  summarize(correlation = list(cor(freewill, js, use = "complete.obs"))) %>%
+  ungroup() %>%
+  mutate(correlation = map_dbl(correlation, ~ round(.x, 2)))
+
+final_table <- left_join(wvs_summary_table, correlations, by = "country_code")
+final_table <- final_table %>% mutate("Country Name" = countrycode(country_code, "iso3c", "country.name"))
+final_table <- final_table[c(5, 2, 4, 3)]
+final_table <- final_table %>% rename("Correlation" = correlation)
+final_table <- final_table %>% filter(`Country Name` != 'United States')
+
+final_table_wvs_formatted <- final_table %>% kable("latex", booktabs = TRUE, escape = FALSE, linesep = "") %>% kable_styling(latex_options = c("striped", "hold_position"), font_size = 10) 
+  
+final_table_wvs_formatted
+```
+
+@tbl-1, @tbl-2, and @tbl-3 suggest that the reproduction of these figures from Feldman et al. (2017) was successful.
+
+\newpage
+# References
