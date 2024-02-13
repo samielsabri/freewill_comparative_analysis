@@ -11,34 +11,22 @@
 library(tidyverse)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+wvs_data <- read_csv("inputs/data/study_3/WVS_TimeSeries_4_0.csv")
+wvs_data <- wvs_data %>% select(COUNTRY_ALPHA, S020, S006, S007, A173, C033, C034)
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
-  mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
+wvs_data <- wvs_data %>% rename(country_code = COUNTRY_ALPHA,
+                                year_survey = S020,
+                                unified_id = S007,
+                                freewill = A173,
+                                js = C033,
+                                jd = C034
+                                )
+
+country_codes <- c("ARG", "BRA", "CHL", "CHN", "CZE", "IND", "JPN", "MEX", "NGA",
+                   "POL", "RUS", "SVK", "ZAF", "KOR", "ESP", "CHE", "USA")
+
+wvs_filtered <- wvs_data %>% filter(country_code %in% country_codes) %>% filter(year_survey <= 2008) %>%
+  filter(freewill > 0)
 
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(wvs_filtered, 'inputs/data/study_3/wvs_filtered.csv') # because original file is way too big
