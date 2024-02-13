@@ -1,0 +1,61 @@
+---
+title: "FW-satisfaction mini-meta"
+author: "Gilad"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    code_folding: hide
+    format: readthedown
+    toc_depth: 3
+  word_document:
+    toc: no
+    toc_depth: '3'
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    df_print: paged
+  pdf_document:
+    toc: no
+    toc_depth: '3'
+---
+
+```{r setup, include=FALSE}
+Sys.setenv(LANG = "en")
+options(scipen=999.99, digits =4)
+
+# this.dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
+# setwd(this.dir)
+source("minimetacor.R")
+```
+
+# Time 1
+
+```{r}
+idataset1 <- read.table("summary-time1.csv", header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+# str(idataset1)
+idataset1
+
+odataset1<-CorMeta(idataset1$R, idataset1$N,idataset1$Study)
+PrintMetaResult(odataset1)
+PrintPlotMetaR(odataset1)
+PrintFunnelMetaR(odataset1)
+predict(odataset1)
+# confint(odataset1)
+```
+
+
+# Time 2
+
+```{r}
+idataset2 <- read.table("summary-time2.csv", header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+idataset2
+
+odataset2<-CorMeta(idataset2$R, idataset2$N,idataset2$Study)
+PrintMetaResult(odataset2)
+PrintPlotMetaR(odataset2)
+PrintFunnelMetaR(odataset2)
+predict(odataset2)
+# confint(odataset2)
+```
+
