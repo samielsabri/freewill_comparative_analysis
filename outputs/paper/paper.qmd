@@ -1,5 +1,5 @@
 ---
-title: "Echoes Through Generations: The Permanence of Child Mortality in Moroccan Lineages"
+title: "The Power of Liberty in the American Workplace: Unveiling the Global Impact of Free Will Perceptions on Job Satisfaction"
 subtitle: "My subtitle if needed"
 author: 
   - Sami El Sabri
@@ -27,35 +27,34 @@ gitcreds_set()
 
 
 # Introduction
-As nations strive to improve child health outcomes, understanding the intergenerational persistence of child mortality provides crucial insights into the effectiveness of public health interventions. This paper zeroes in on Morocco, a context within the broader scope of 44 developing countries analyzed by Lu and Vogl, to explore this phenomenon in detail. Our focus is on delineating the nuanced patterns of child mortality across generations within Moroccan families and assessing the broader socio-economic and public health implications.
+In the evolving landscape of organizational psychology, the exploration of individual agency beliefs (particularly free will) and their impact on job satisfaction presents a compelling field of study. "Agency Beliefs Over Time and Across Cultures: Free Will Beliefs Predict Higher Job Satisfaction" by Feldman et al. embarks on this journey, unveiling the nuanced relationship between one's belief in free will and their subsequent job satisfaction across diverse cultural contexts. A focused exploration of this relationship within the context of the American workforce provides a valuable estimand, given the United States' strong emphasis on individualism, autonomy, and the freedom to shape one's destiny which are principles deeply ingrained in the national ethos.
 
-Lu and Vogl’s study uncovers a potent and persistent connection between the child mortality experiences of grandmothers and their daughters, drawing on data from 119 Demographic and Health Surveys. In Morocco, the analysis sought to fill the critical gap in understanding the specific magnitude and characteristics of this relationship. The estimands in the paper are primarily odds ratios and incidence rate ratios, which provide a measure of the relationship between a mother's experience of sibling death in childhood and her own child's mortality risk. In addition to these, the researchers computed average marginal effects to capture the absolute persistence of child mortality risk. By employing robust statistical techniques and controlling for potential confounders, this paper aims to provide a clear picture of intergenerational child mortality trends within Moroccan society.
+The paper addresses a significant gap in existing literature by articulating how free will beliefs, beyond serving as philosophical contemplations, exert a tangible influence on individuals' professional lives. Through a robust approach that includes longitudinal studies and cross-cultural analyses, the research highlights a consistent positive correlation between strong beliefs in free will and higher levels of job satisfaction. This relationship, significantly influenced by perceived autonomy, underscores the pivotal role of individual agency beliefs in the context of the American workplace, where personal freedom and self-determination are highly valued.
 
-The methodology involved detailed regression analyses to ascertain the influence of familial, socio-economic, and geographical factors on child mortality rates. By dissecting this data, the study found evidence of a significant risk in child mortality that transcends generations, which remained substantial even after accounting for various covariates. The implications of these findings are profound, as they not only shed light on the persistent nature of health disparities but also challenge the prevailing narrative of universal health improvement. Understanding the roots and resilience of these disparities is crucial for the development of effective health policies and interventions.
+The importance of this paper lies not only in its findings but also in its implications, offering practical insights for enhancing organizational culture and employee satisfaction within the American context. By highlighting the importance of fostering environments that champion autonomy and respect individual agency beliefs, the paper prompts business leaders and policymakers to rethink strategies for workplace management and development. This shift towards recognizing and nurturing free will beliefs could serve as a key lever for boosting job satisfaction, employee engagement, and organizational performance across the United States.
 
-The paper is structured to first present the context and motivation for focusing on Morocco, followed by a description of the data and methodology. Subsequent sections discuss the results, their significance, and implications for Moroccan public health policies. Finally, the paper concludes with recommendations for future research and policy considerations, underscoring the need for targeted strategies to disrupt the cycle of intergenerational child mortality.
-
+Structurally, the paper unfolds starting from its comprehensive methodology (including the six-month study of American online workers) to its extensive cross-cultural survey, which contextualizes the American data within a global framework. It then articulates the specific implications of free will beliefs for job satisfaction among American employees, weaving these insights into broader discussions on the interplay between cultural values, individual beliefs, and workplace dynamics. The concluding sections propose future research directions and practical applications, emphasizing the critical role of understanding and leveraging individual agency beliefs in cultivating a more motivated and satisfied workforce.
 
 You can and should cross-reference sections and sub-sections. 
 
 The remainder of this paper is structured as follows. @sec-data....
 
 
-# Data: Focusing on Morocco's Intergenerational Child Mortality {#sec-data}
+# Data {#sec-data}
 
-The dataset for Lu and Vogl's study provides a detailed snapshot of child mortality rates across generations within Morocco. It encompasses demographic surveys capturing both historical and contemporary data, spanning several decades to allow for the assessment of persistence in child mortality rates from grandmothers to mothers.
+The dataset for the study provides a detailed snapshot of free will beliefs, job satisfaction, and perceived job autonomy among American online workers. 
 
-The variables within this dataset were carefully selected to reflect key indicators of health outcomes, socioeconomic status, and geographic identifiers for regional analysis within Morocco. These variables include include the number and ages of children who died, causes of death, maternal health indicators, education levels, household income, and access to health services, which are vital for understanding the intergenerational dynamics of child mortality.
+The variables within this dataset were carefully selected to reflect key indicators of job satisfaction, belief in free will, job autonomy, and additional agency constructs for regional analysis within America. 
 
-Data cleaning was especially important in this case, considering the challenges inherent in longitudinal and generational health data. This ensured the integrity and continuity of data across different time points and handling any missing or inconsistent records, which are typical in historical datasets.
+Data cleaning was especially important in this case, considering the challenges inherent in longitudinal and generational health data. This ensured the integrity and continuity of data across different time points and handling any missing or inconsistent records. The dataset underwent meticulous cleaning, addressing missing values and ensuring consistency across responses. Special attention was given to the reliability of scales used for measuring the core variables, with adjustments made to account for the online work setting of the participants.
 
-Summary statistics revealed the mean and median child mortality rates, the variance in socio-economic indicators among the surveyed families, and other health-related metrics. This aggregated data provided a foundation for understanding the base conditions of Moroccan families and any preliminary patterns indicating the persistence of child mortality across generations.
+Summary statistics revealed the mean and median job satisfaction rates, the correlation in job autonomy, and other job-related metrics. This aggregated data provided a foundation for understanding the base conditions of the workplace and any preliminary patterns indicating the persistence of individual agency.
 
-Visual representations, such as graphs and tables, illustrated the distribution of mortality rates, the relationship between socio-economic factors and child mortality, and the regional differences within Morocco. These visuals helped to convey the depth and nuances of the intergenerational persistence observed in the Moroccan data.
+Visual representations, such as graphs and tables, illustrated the distribution of job satisfaction, free will beliefs, and the relationship between the two. These visuals helped to convey the depth and nuances of the autonomy persistence observed in the American data.
 
 The appendices include detailed statistical tables, additional graphs showing complex data relationships, and extensive notes on the data cleaning and processing methodology.
 
-This description of the dataset was written with the general ethical practices of demographic and health research in mind and provides a narrative for a subset of data focused on Morocco.
+This description of the dataset was written with the general ethical practices of demographic research in mind and provides a narrative for a subset of data focused on America.
 
 The precise quantification of child mortality rates captured not only the incidence of deaths but also the timing and causes. This entailed using measurement techniques and standard demographic health indicators like the under-five mortality rate (U5MR) or neonatal mortality rate (NMR), which are internationally recognized measures.
 
