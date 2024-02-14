@@ -4,7 +4,7 @@ subtitle: "Nowhere near done yet! We had significant issues with our last datase
 author: 
   - Sami El Sabri
   - Liban Timir
-thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis"
+thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis. SSRP replication available at: https://www.socialsciencereproduction.org/reproductions/94caaeaf-7e11-4efa-9269-7729fc2e0837/index"
 date: 02-13-2024
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
