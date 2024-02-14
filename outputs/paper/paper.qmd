@@ -29,7 +29,7 @@ In recent years, the intersection between personal beliefs in free will and cogn
 
 They executed three distinct studies: the first with real estate agents in Taiwan over three months, the second involving American workers over six months using Amazon Mechanical Turk, and the third utilizing a large cross-cultural sample from the World Values Survey encompassing 16 countries. This multifaceted approach allowed them to assess the generalizability of free will beliefs as predictors of job satisfaction across various cultural contexts and professional environments, providing a robust examination of how these beliefs influence job satisfaction over time. 
 
-Utilizing the same dataset and a similar methodology to Feldman et al. (2017), we aim to replicate their results in the context of the United States, a very heterogenous country that is characterized by a high importance of individualist, but also cultural diversity and socioeconomic inequality. While Feldman et al. did investigate the relationship between the belief in free will and job satisfaction in the United States, they did not integrate these results to the cross-cultural analysis, as the US were not included in the sample of 16 countries. This paper, therefore, seeks to fill this gap and reproduce these aspects of the Feldman et al. paper: (1) the relationship between the belief in free will and job satisfaction applies to the context of American adults working at Amazon Mechanical Turk (2) free will is a significant predictor of job satisfaction at the national-level, using the World Values Survey. The estimand is the correlation between the belief in free will and job satisfaction. Our reproduction was conducted using the statistical programming language R (@citeR). In the data analysis and visualization process, we also made use of the following R packages: tidyverse (@citetidyverse), dplyr (@citedplyr), knitr (@citeknitr), kableExtra (@citekExtra), and countrycode (@citecc). 
+Utilizing the same dataset and a similar methodology to Feldman et al. (2017), we aim to replicate their results in the context of the United States, a very heterogenous country that is characterized by a high importance of individualist, but also cultural diversity and socioeconomic inequality. While Feldman et al. did investigate the relationship between the belief in free will and job satisfaction in the United States, they did not integrate these results to the cross-cultural analysis, as the US were not included in the sample of 16 countries. This paper, therefore, seeks to fill this gap and reproduce these aspects of the Feldman et al. paper: (1) the relationship between the belief in free will and job satisfaction applies to the context of American adults working at Amazon Mechanical Turk (2) free will is a significant predictor of job satisfaction at the national-level, using the World Values Survey. We will also consider whether there are any significant differences between the national-level data and the Amazon Mechanical Turk data. The estimand is the correlation between the belief in free will and job satisfaction. Our reproduction was conducted using the statistical programming language R (@citeR). In the data analysis and visualization process, we also made use of the following R packages: tidyverse (@citetidyverse), dplyr (@citedplyr), knitr (@citeknitr), kableExtra (@citekExtra), and countrycode (@citecc). 
 
 We begin our paper with a closer look at the data source and measurement (@sec-data), followed by a selection of relevant results (@sec-results). Finally, we will conclude with a discussion of our findings to integrate our replication with the original paper by @feldman2017 and the broader literature on free will beliefs. We will also discuss potential ethical biases, limitations, and future directions. This shift towards recognizing and nurturing free will beliefs could serve as a key lever for boosting job satisfaction, employee engagement, and organizational performance across the United States. ### TALK ABOUT FINDINGS HERE###
 
@@ -82,30 +82,18 @@ The appendices include detailed statistical tables, additional graphs showing co
 
 This description of the dataset was written with the general ethical practices of demographic research in mind and provides a narrative for a subset of data focused on America.
 
+# Results {#sec-results}
+A173 free will
+c033 job satisfaction
+c034 decisions in the job
+F198 Fate versus control
+G023 autonomous individual
+C031 degree of pride in your work
+X003 Age
+X001 Sex
 
 
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-```
-
-Talk way more about it. 
 
 
 
