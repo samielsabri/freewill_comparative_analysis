@@ -42,13 +42,20 @@ wvs_data_usa <- wvs_data_usa %>% rename(country_code = COUNTRY_ALPHA,
 country_codes <- c("ARG", "BRA", "CHL", "CHN", "CZE", "IND", "JPN", "MEX", "NGA",
                    "POL", "RUS", "SVK", "ZAF", "KOR", "ESP", "CHE", "USA")
 
-wvs_filtered <- wvs_data %>% filter(country_code %in% country_codes) %>% filter(year_survey <= 2008) %>%
+wvs_filtered_replication <- wvs_data %>% filter(country_code %in% country_codes) %>% filter(year_survey <= 2008) %>%
   filter(freewill > 0)
+
+wvs_filtered <- wvs_data %>% filter(country_code %in% country_codes) %>%
+  filter(freewill > 0)
+
 
 wvs_data_usa[wvs_data_usa < 0] <- NA
 
+wvs_data_usa <- wvs_data_usa %>% mutate(across(c("fate"), ~11 - .)) %>% mutate(across(c("job_pride"), ~4 - .))
+
 #### Save WVS data ####
-write_csv(wvs_filtered, 'inputs/data/study_3/wvs_filtered.csv') # because original file is way too big
+write_csv(wvs_filtered, 'outputs/data/wvs_filtered.csv')
+write_csv(wvs_filtered_replication, 'inputs/data/study_3/wvs_filtered.csv')
 write_csv(wvs_data_usa, 'outputs/data/wvs_data_usa.csv')
 
 ## Clean Study 2 data ##

@@ -26,8 +26,10 @@ library(psych)
 library(knitr)
 library(kableExtra)
 library(corrplot)
+library(countrycode)
 
 wvs_data_usa <- read_csv(here::here('outputs/data/wvs_data_usa.csv'))
+wvs_filtered <- read_csv("inputs/data/study_3/wvs_filtered.csv")
 satisfaction_data_usa <- read_csv(here::here('inputs/data/study_2/FW satisfaction-Study 2-data.csv'))
 satisfaction_data_usa_rel <- read_csv(here::here('outputs/data/satisfaction_data_usa_rel.csv'))
 
@@ -65,12 +67,12 @@ In order to assess the internal validity and reliability of the psychological co
 
 ```{r, include=FALSE, message=FALSE, echo=FALSE}
 js1_items <- satisfaction_data_usa[, c("jobsat_1", "jobsat_2", "jobsat_3", "jobsat_4", "jobsat_5")]
-alpha_js1 <- alpha(js1_items)
+alpha_js1 <- alpha(js1_items, check.keys=TRUE)
 alpha_js1 <- alpha_js1$total$raw_alpha
 alpha_js1 <- round(alpha_js1,2)
 
 js2_items <- satisfaction_data_usa[, c("jobsat2_1", "jobsat2_2", "jobsat2_3", "jobsat2_4", "jobsat2_5")]
-alpha_js2 <- alpha(js2_items)
+alpha_js2 <- alpha(js2_items, , check.keys=TRUE)
 alpha_js2 <- alpha_js2$total$raw_alpha
 alpha_js2 <- round(alpha_js2,2)
 
@@ -208,7 +210,7 @@ The World Values Survey dataset needed some additional cleaning steps, filtering
 #| warning: false
 #| message: false
 #| label: tbl-wvssummary
-#| tbl-cap: Summary Statistics for selected Psychological Constructs measured in the World Values Survey USA, 1981-2017
+#| tbl-cap: "Summary Statistics for selected Psychological Constructs measured in the World Values Survey USA, 1981-2017"
 
 wvs_data_usa_summary <- wvs_data_usa %>% summarise(
   mean_age = round(mean(Age, na.rm = TRUE),2),
@@ -223,28 +225,27 @@ wvs_data_usa_summary <- wvs_data_usa %>% summarise(
   sd_fate = round(sd(fate, na.rm = TRUE),2),
   mean_pride = round(mean(job_pride, na.rm = TRUE),2),
   sd_pride= round(sd(job_pride, na.rm = TRUE),2),
-  mean_autonomy = round(mean(autonomy, na.rm = TRUE),2),
-  sd_autonomy = round(sd(autonomy, na.rm = TRUE),2))
+  )
   
 wvs_data_usa_summary <- data.frame(
   Variable = c("Age","Belief in Free Will", "Job Satisfaction", 
-               "Job Autonomy", "Job Pride", "Fate vs. Control", "Personal Autonomy"),
+               "Job Autonomy", "Pride in Job", "Belief in Fate"),
   Mean = c(wvs_data_usa_summary$mean_age,
            wvs_data_usa_summary$mean_freewill,
            wvs_data_usa_summary$mean_js,
            wvs_data_usa_summary$mean_jaut,
            wvs_data_usa_summary$mean_pride,
-           wvs_data_usa_summary$mean_fate,
-           wvs_data_usa_summary$mean_autonomy),
+           wvs_data_usa_summary$mean_fate
+           ),
   SD = c(wvs_data_usa_summary$sd_age,
          wvs_data_usa_summary$sd_freewill,
          wvs_data_usa_summary$sd_js,
          wvs_data_usa_summary$sd_jaut,
          wvs_data_usa_summary$sd_pride,
-         wvs_data_usa_summary$sd_fate,
-         wvs_data_usa_summary$sd_autonomy))
+         wvs_data_usa_summary$sd_fate
+         ))
 
-wvs_data_usa_summary
+kable(wvs_data_usa_summary)
 
   
 ```
@@ -278,7 +279,6 @@ Rationale for Differences: Discuss any expected or surprising differences in the
 satisfaction_data_usa_rel_num <- satisfaction_data_usa_rel %>% dplyr::select(-Age, -Sex, -age_group)
 cor_matrix <- cor(satisfaction_data_usa_rel_num, use = 'pairwise.complete.obs')
 
-# Now, cor_matrix contains your full correlation matrix
 corrplot(cor_matrix, method = "circle", type='full', tl.col="black", sig.level = 0.05, insig = "blank")
 
 
@@ -306,7 +306,7 @@ cor_fw_jaut1_correlation_coefficient <- round(cor_fw_jaut1$estimate,2)
 cor_fw_jaut1_p_value <- cor_fw_jaut1$p.value
 cor_fw_jaut1_ci <- round(cor_fw_jaut1$conf.int,2)
 ```
-In exploring free will beliefs and their impact on job satifaction in the context of American Amazon Mechanical Turk workers, our study replicates and extends Feldman et al.'s results. As seen in @fig-corst2, most variables are significantly correlated with each other, with the highest correlations being unsurprisingly between the two measurements of Job satisfaction. Locus of control lacks any significant correlations, which together with its low reliability coefficient designates it as a less decisive control variable. The most important relationship, however, is between free will beliefs and job satisfaction: The belief in free will was significantly positively correlated with job satisfaction both at Time 1 (*r* = `r cor_fw_js1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js1_ci[1]`, `r cor_fw_js1_ci[2]`]) and at Time 2 ( (r = `r cor_fw_js2_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js2_ci[1]`, `r cor_fw_js1_ci[2]`])). However, this correlation is not as strong as the one between free will beliefs and job autonomy (*r* = `r cor_fw_jaut1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_jaut1_ci[1]`, `r cor_fw_jaut1_ci[2]`]). This supports the claim that job autonomy may be the most important mediating variable between free will beliefs and job satisfaction. Moreover, a step-wise multiple regression on job satisfaction with all psychological agency constructs (full results in @sec-apx-stepwise) confirmed that the effect of free will beliefs on job satisfaction is robust and the strongest relative impact, even when controlling for other agency constructs (Time 1: *p* < 0.034; Time 2: *p* < 0.031).
+In exploring free will beliefs and their impact on job satisfaction in the context of American Amazon Mechanical Turk workers, our study replicates and extends Feldman et al.'s results. As seen in @fig-corst2, most variables are significantly correlated with each other, with the highest correlations being unsurprisingly between the two measurements of Job satisfaction. Locus of control lacks any significant correlations, which together with its low reliability coefficient designates it as a less decisive control variable. The most important relationship, however, is between free will beliefs and job satisfaction: The belief in free will was significantly positively correlated with job satisfaction both at Time 1 (*r* = `r cor_fw_js1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js1_ci[1]`, `r cor_fw_js1_ci[2]`]) and at Time 2 ( (r = `r cor_fw_js2_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js2_ci[1]`, `r cor_fw_js1_ci[2]`])). However, this correlation is not as strong as the one between free will beliefs and job autonomy (*r* = `r cor_fw_jaut1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_jaut1_ci[1]`, `r cor_fw_jaut1_ci[2]`]). This supports the claim that job autonomy may be the most important mediating variable between free will beliefs and job satisfaction. Moreover, a step-wise multiple regression on job satisfaction with all psychological agency constructs (full results in @sec-apx-stepwise) confirmed that the effect of free will beliefs on job satisfaction is robust and the strongest relative impact, even when controlling for other agency constructs (Time 1: *p* < 0.034; Time 2: *p* < 0.031).
 
 
 The replication of study 2 of @feldman2017 supports the claim that there is a direct positive correlation between the belief in free will and job satisfaction over time and controlling for other psychological agency constructs.
@@ -367,10 +367,83 @@ ggplot(satisfaction_data_usa_rel, aes(x = factor(Sex, labels = c("Male", "Female
 
 
 ## National Sample (WVS)
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-corwvs
+#| fig-cap: "Correlation Matrix for selected Psychological Constructs measured in World Values Survey USA 1981-2017"
+#| fig-width: 10
+#| fig-height: 10
+
+wvs_data_usa_num <- wvs_data_usa %>% dplyr::select(freewill, job_satisfaction, job_decision, job_pride, fate)
+wvs_data_usa_num <- wvs_data_usa_num %>% rename("Belief in Free Will" = "freewill",
+                                                "Job Satisfaction" = "job_satisfaction",
+                                                "Job Autonomy" = "job_decision",
+                                                "Pride in Job" = "job_pride",
+                                                "Belief in Fate" = "fate",
+                                                )
+cor_matrix <- cor(wvs_data_usa_num, use = 'pairwise.complete.obs')
+
+corrplot(cor_matrix, method = "circle", type='full', tl.col="black", sig.level = 0.05, insig = "blank")
+
+cor_fw_js1 <- cor.test(wvs_data_usa_num$`Belief in Free Will`, 
+                   wvs_data_usa_num$`Job Satisfaction`, method = "pearson")
 
 
+cor_fw_js1_correlation_coefficient <- round(cor_fw_js1$estimate,2)
+cor_fw_js1_p_value <- cor_fw_js1$p.value
+cor_fw_js1_ci <- round(cor_fw_js1$conf.int,2)
+
+cor_js_jaut <- cor.test(wvs_data_usa_num$`Job Autonomy`, 
+                   wvs_data_usa_num$`Job Satisfaction`, method = "pearson")
 
 
+cor_js_jaut_correlation_coefficient <- round(cor_js_jaut$estimate,2)
+cor_js_jaut_p_value <- cor_js_jaut$p.value
+cor_js_jaut_ci <- round(cor_js_jaut$conf.int,2)
+
+cor_fw_jaut <- cor.test(wvs_data_usa_num$`Job Autonomy`, 
+                   wvs_data_usa_num$`Belief in Free Will`, method = "pearson")
+
+
+cor_fw_jaut_correlation_coefficient <- round(cor_fw_jaut$estimate,2)
+cor_fw_jaut_p_value <- cor_fw_jaut$p.value
+cor_fw_jaut_ci <- round(cor_fw_jaut$conf.int,2)
+
+cor_fw_fate <- cor.test(wvs_data_usa_num$`Belief in Fate`, 
+                   wvs_data_usa_num$`Belief in Free Will`, method = "pearson")
+
+
+cor_fw_fate_correlation_coefficient <- round(cor_fw_fate$estimate,2)
+cor_fw_fate_p_value <- cor_fw_fate$p.value
+cor_fw_fate_ci <- round(cor_fw_fate$conf.int,2)
+```
+As shown in @fig-corwvs, the results of the national-level World Values Survey also show a positive correlation between free will beliefs and job satisfaction (*r* = `r cor_fw_js1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js1_ci[1]`, `r cor_fw_js1_ci[2]`]). Similarly, job autonomy is highly correlated with job satisfaction (*r* = `r cor_js_jaut_correlation_coefficient`, *p* <.001, CI [`r cor_js_jaut_ci[1]`, `r cor_js_jaut_ci[2]`]) and with free will beliefs (*r* = `r cor_fw_jaut_correlation_coefficient`, *p* <.001, CI [`r cor_fw_jaut_ci[1]`, `r cor_fw_jaut_ci[2]`]). Since we created these psychological constructs based on single-item questions of the World Values Survey, internal validity and reliability cannot be guaranteed as concretely as with the Amazon Mechanical Turk survey sample. However, the construct 'Belief in Fate' negatively correlated with the belief in free will, as expected (*r* = `r cor_fw_fate_correlation_coefficient`, *p* <.001, CI [`r cor_fw_fate_ci[1]`, `r cor_fw_fate_ci[2]`]). Similarly, the construct 'Pride in Job' is positively correlated with all other variables except for the belief in fate, as expected.
+
+### Comparison to other countries
+```{r}
+wvs_summary_table <- wvs_filtered %>% group_by(country_code) %>% 
+  summarize("FW Mean"=round(mean(freewill),2), n=n())
+
+wvs_filtered_2 <- wvs_filtered %>% filter(js > 0)
+
+correlations <- wvs_filtered_2 %>%
+  group_by(country_code) %>%
+  do(correlation = cor(.$freewill, .$js, use = "complete.obs"))
+
+correlations <- wvs_filtered_2 %>%
+  group_by(country_code) %>%
+  summarize(correlation = list(cor(freewill, js, use = "complete.obs"))) %>%
+  ungroup() %>%
+  mutate(correlation = map_dbl(correlation, ~ round(.x, 2)))
+
+final_table <- left_join(wvs_summary_table, correlations, by = "country_code")
+final_table <- final_table %>% mutate("Country Name" = countrycode(country_code, "iso3c", "country.name"))
+final_table <- final_table[c(5, 2, 4, 3)]
+final_table <- final_table %>% rename("Correlation" = correlation)
+final_table
+```
 
 
 

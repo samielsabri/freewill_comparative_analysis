@@ -33,7 +33,7 @@ library(countrycode)
 # Loading the cleaned data
 satisfaction_data_taiwan <- read_csv(here::here("inputs/data/study_1/FW satisfaction-Study 1-data.csv"))
 satisfaction_data_usa <- read_csv(here::here("inputs/data/study_2/FW satisfaction-Study 2-data.csv"))
-wvs_data <- read_csv(here::here("inputs/data/study_3/wvs_filtered.csv"))
+wvs_data <- read_csv(here::here("inputs/data/study_3/wvs_filtered_replication.csv"))
 
 ```
 
