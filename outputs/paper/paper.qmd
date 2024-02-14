@@ -19,6 +19,17 @@ bibliography: references.bib
 #| message: false
 
 library(ggplot2)
+library(MASS)
+library(tidyverse)
+library(car)
+library(psych)
+library(knitr)
+library(kableExtra)
+library(corrplot)
+
+wvs_data_usa <- read_csv(here::here('outputs/data/wvs_data_usa.csv'))
+satisfaction_data_usa <- read_csv(here::here('inputs/data/study_2/FW satisfaction-Study 2-data.csv'))
+satisfaction_data_usa_rel <- read_csv(here::here('outputs/data/satisfaction_data_usa_rel.csv'))
 
 ```
 
@@ -50,10 +61,195 @@ Covariates and Controls: If applicable, detail any additional variables used as 
 
 GO INTO GREAT DETAIL WITH MEASUREMENT!
 
-## Data Characteristics {#sec-characteristics}
+In order to assess the internal validity and reliability of the psychological constructs measured in @feldman2017, we verified the Cronbach-Alpha reliability coefficients based on the raw dataset. As shown in @tbl-reliability, we were able to successfully replicate the coefficients for most constructs. The only deviation is with the trait locus of control, which has a coefficient α = .58 in @rotter1966, but 0.61 in our replication, indicating even greater confidence that the survey questions indeed measure the underlying construct.
 
-Preprocessing Steps: Outline the steps taken to prepare the data for analysis, including any cleaning, filtering, or transformation processes.
-Handling of Missing Data: Describe how missing data were addressed, whether through imputation, exclusion, or another method.
+```{r, include=FALSE, message=FALSE, echo=FALSE}
+js1_items <- satisfaction_data_usa[, c("jobsat_1", "jobsat_2", "jobsat_3", "jobsat_4", "jobsat_5")]
+alpha_js1 <- alpha(js1_items)
+alpha_js1 <- alpha_js1$total$raw_alpha
+alpha_js1 <- round(alpha_js1,2)
+
+js2_items <- satisfaction_data_usa[, c("jobsat2_1", "jobsat2_2", "jobsat2_3", "jobsat2_4", "jobsat2_5")]
+alpha_js2 <- alpha(js2_items)
+alpha_js2 <- alpha_js2$total$raw_alpha
+alpha_js2 <- round(alpha_js2,2)
+
+freewill_items <- satisfaction_data_usa[, c("fw_1", "fw_2", "fw_3", "fw_4", "fw_5", "fw_6", "fw_7", "fw_8", "fw_9")]
+alpha_freewill <- alpha(freewill_items)
+alpha_freewill <- alpha_freewill$total$raw_alpha
+alpha_freewill <- round(alpha_freewill,2)
+
+jaut1_items <- satisfaction_data_usa[, c("jobaut_3", "jobaut_4", "jobaut_5")]
+alpha_jaut1 <- alpha(jaut1_items)
+alpha_jaut1 <- alpha_jaut1$total$raw_alpha
+alpha_jaut1 <- round(alpha_jaut1,2)
+
+jaut2_items <- satisfaction_data_usa[, c("jobaut2_3", "jobaut2_4", "jobaut2_5")]
+alpha_jaut2 <- alpha(jaut2_items)
+alpha_jaut2 <- alpha_jaut2$total$raw_alpha
+alpha_jaut2 <- round(alpha_jaut2,2)
+
+locus_items <- satisfaction_data_usa[, c("lc1", "lc2", "lc3", "lc4", "lc5", "lc6", "lc7", "lc8", "lc9", "lc10", "lc11", "lc12", "lc13")]
+alpha_locus <- alpha(locus_items, check.keys=TRUE)
+alpha_locus <- alpha_locus$total$raw_alpha
+alpha_locus <- round(alpha_locus,2)
+
+self_eff_items <- satisfaction_data_usa[, c("selfeff_1", "selfeff_2", "selfeff_3")]
+alpha_self_eff <- alpha(self_eff_items)
+alpha_self_eff <- alpha_self_eff$total$raw_alpha
+alpha_self_eff <- round(alpha_self_eff,2)
+
+self_est_items <- satisfaction_data_usa[, c("selfest_1", "selfest_2", "selfest_3", "selfest_4", "selfest_5", "selfest_6", "selfest_7", "selfest_8", "selfest_9", "selfest_10")]
+alpha_self_est <- alpha(self_est_items, check.keys=TRUE)
+alpha_self_est <- alpha_self_est$total$raw_alpha
+alpha_self_est <- round(alpha_self_est,2)
+
+self_con_items <- satisfaction_data_usa[, c("selfcon_1", "selfcon_2", "selfcon_3", "selfcon_4", "selfcon_5", "selfcon_6", "selfcon_7", "selfcon_8", "selfcon_9", "selfcon_10", "selfcon_11", "selfcon_12", "selfcon_13")]
+alpha_self_con <- alpha(self_con_items, check.keys=TRUE)
+alpha_self_con <- alpha_self_con$total$raw_alpha
+alpha_self_con <- round(alpha_self_con,2)
+
+implicit_items <- satisfaction_data_usa[, c("lay_1", "lay_2", "lay_3", "lay_4", "lay_5r", "lay_6r", "lay_7r", "lay_8r")]
+alpha_implicit <- alpha(implicit_items, check.keys=TRUE)
+alpha_implicit <- alpha_implicit$total$raw_alpha
+alpha_implicit <- round(alpha_implicit,2)
+
+reliability_scores <- data.frame(
+  Rows = c("Job Satisfaction (T1)", "Job Satisfaction (T2)", "Belief in Free Will (T1)", 
+           "Job Autonomy (T1)", "Job Autonomy (T2)", "Locus of Control", 
+           "Implicit Beliefs", "Self-Esteem", "Self-Efficacy", "Self-Control"),
+  "Reliability Coefficient" = c(alpha_js1, alpha_js2, alpha_freewill, alpha_jaut1, alpha_jaut2, alpha_locus, alpha_self_eff, alpha_self_est, alpha_implicit, alpha_self_con)
+)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-reliability
+#| tbl-cap: Cronbach Alpha Reliability Coefficients for Psychological Constructs measured in Feldman et al. (2017)
+
+kable(reliability_scores)
+```
+
+
+## Data Characteristics {#sec-characteristics}
+The original research survey data published by @feldman2017 did not require any further data cleaning. Using the aforementioned constructs which are derived from their respective set of survey questions, we were able to replicate all the means and standard deviations, as seen in @tbl-st2summary.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-st2summary
+#| tbl-cap: Summary Statistics for Psychological Constructs measured in Feldman et al. (2017)
+
+satisfaction_data_usa_summary <- satisfaction_data_usa %>% 
+  summarize(
+    mean_age = round(mean(age),2),
+    sd_age = round(sd(age),2),
+    mean_js1 = round(mean(jobsat1, na.rm = TRUE), 2),
+    sd_js1 = round(sd(jobsat1, na.rm = TRUE), 2),
+    mean_js2 = round(mean(jobsat2, na.rm = TRUE), 2),
+    sd_js2 = round(sd(jobsat2, na.rm = TRUE), 2),
+    mean_freewill = round(mean(FWDfwagency, na.rm = TRUE), 2),
+    sd_freewill = round(sd(FWDfwagency, na.rm = TRUE), 2),
+    mean_jobaut = round(mean(jobaut, na.rm = TRUE), 2),
+    sd_jobaut = round(sd(jobaut, na.rm = TRUE), 2),
+    mean_jobaut2 = round(mean(jobaut2, na.rm = TRUE), 2),
+    sd_jobaut2 = round(sd(jobaut2, na.rm = TRUE), 2),
+    mean_locus = round(mean(locus, na.rm = TRUE), 2),
+    sd_locus = round(sd(locus, na.rm = TRUE), 2),
+    mean_selfcontrol = round(mean(selfcontrol, na.rm = TRUE), 2),
+    sd_selfcontrol = round(sd(selfcontrol, na.rm = TRUE), 2),
+    mean_selfeff = round(mean(selfeff, na.rm = TRUE), 2),
+    sd_selfeff = round(sd(selfeff, na.rm = TRUE), 2),
+    mean_selfest = round(mean(selfest, na.rm = TRUE), 2),
+    sd_selfest = round(sd(selfest, na.rm = TRUE), 2),
+    mean_implicit = round(mean(ess_kind, na.rm = TRUE), 2),
+    sd_implicit = round(sd(ess_kind, na.rm = TRUE), 2)
+  )
+
+satisfaction_data_usa_summary <- data.frame(
+  Variable = c("Age", "Job Satisfaction (T1)", "Job Satisfaction (T2)", "Belief in Free Will (T1)",
+               "Job Autonomy (T1)", "Job Autonomy (T2)", "Locus of Control", "Implicit Beliefs",
+               "Self-Esteem", "Self-Efficacy", "Self-Control"),
+  Mean = c(
+          satisfaction_data_usa_summary$mean_age,
+           satisfaction_data_usa_summary$mean_js1, 
+           satisfaction_data_usa_summary$mean_js2,
+           satisfaction_data_usa_summary$mean_freewill,
+           satisfaction_data_usa_summary$mean_jobaut,
+           satisfaction_data_usa_summary$mean_jobaut2,
+           satisfaction_data_usa_summary$mean_locus,
+           satisfaction_data_usa_summary$mean_implicit,
+           satisfaction_data_usa_summary$mean_selfest,
+           satisfaction_data_usa_summary$mean_selfeff,
+           satisfaction_data_usa_summary$mean_selfcontrol),
+  SD = c(satisfaction_data_usa_summary$sd_age,
+        satisfaction_data_usa_summary$sd_js1, 
+         satisfaction_data_usa_summary$sd_js2,
+         satisfaction_data_usa_summary$sd_freewill, 
+         satisfaction_data_usa_summary$sd_jobaut,
+         satisfaction_data_usa_summary$sd_jobaut2,
+         satisfaction_data_usa_summary$sd_locus,
+         satisfaction_data_usa_summary$sd_implicit,
+         satisfaction_data_usa_summary$sd_selfest,
+         satisfaction_data_usa_summary$sd_selfeff,
+         satisfaction_data_usa_summary$sd_selfcontrol))
+  
+kable(satisfaction_data_usa_summary)
+```
+
+
+The World Values Survey dataset needed some additional cleaning steps, filtering for certain variables of interest and only for surveys based in the United States of America. See @tbl-wvssummary for summary statistics of selected psychological constructs.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-wvssummary
+#| tbl-cap: Summary Statistics for selected Psychological Constructs measured in the World Values Survey USA, 1981-2017
+
+wvs_data_usa_summary <- wvs_data_usa %>% summarise(
+  mean_age = round(mean(Age, na.rm = TRUE),2),
+    sd_age = round(sd(Age, na.rm = TRUE),2),
+  mean_freewill = round(mean(freewill, na.rm = TRUE),2),
+  sd_freewill = round(sd(freewill, na.rm = TRUE),2),
+  mean_js = round(mean(job_satisfaction, na.rm = TRUE),2),
+  sd_js = round(sd(job_satisfaction, na.rm = TRUE),2),
+  mean_jaut = round(mean(job_decision, na.rm = TRUE),2),
+  sd_jaut = round(sd(job_decision, na.rm = TRUE),2),
+  mean_fate = round(mean(fate, na.rm = TRUE),2),
+  sd_fate = round(sd(fate, na.rm = TRUE),2),
+  mean_pride = round(mean(job_pride, na.rm = TRUE),2),
+  sd_pride= round(sd(job_pride, na.rm = TRUE),2),
+  mean_autonomy = round(mean(autonomy, na.rm = TRUE),2),
+  sd_autonomy = round(sd(autonomy, na.rm = TRUE),2))
+  
+wvs_data_usa_summary <- data.frame(
+  Variable = c("Age","Belief in Free Will", "Job Satisfaction", 
+               "Job Autonomy", "Job Pride", "Fate vs. Control", "Personal Autonomy"),
+  Mean = c(wvs_data_usa_summary$mean_age,
+           wvs_data_usa_summary$mean_freewill,
+           wvs_data_usa_summary$mean_js,
+           wvs_data_usa_summary$mean_jaut,
+           wvs_data_usa_summary$mean_pride,
+           wvs_data_usa_summary$mean_fate,
+           wvs_data_usa_summary$mean_autonomy),
+  SD = c(wvs_data_usa_summary$sd_age,
+         wvs_data_usa_summary$sd_freewill,
+         wvs_data_usa_summary$sd_js,
+         wvs_data_usa_summary$sd_jaut,
+         wvs_data_usa_summary$sd_pride,
+         wvs_data_usa_summary$sd_fate,
+         wvs_data_usa_summary$sd_autonomy))
+
+wvs_data_usa_summary
+
+  
+```
+
+
 
 Summary Statistics and Initial Observations:
 
@@ -66,33 +262,111 @@ Rationale for Differences: Discuss any expected or surprising differences in the
 
 
 
-#####
 
-The dataset for the study provides a detailed snapshot of free will beliefs, job satisfaction, and perceived job autonomy among American online workers. 
-
-The variables within this dataset were carefully selected to reflect key indicators of job satisfaction, belief in free will, job autonomy, and additional agency constructs for regional analysis within America. 
-
-Data cleaning was especially important in this case, considering the challenges inherent in longitudinal and generational health data. This ensured the integrity and continuity of data across different time points and handling any missing or inconsistent records. The dataset underwent meticulous cleaning using R [@citeR], addressing missing values and ensuring consistency across responses. Special attention was given to the reliability of scales used for measuring the core variables, with adjustments made to account for the online work setting of the participants.
-
-Summary statistics revealed the mean and median job satisfaction rates, the correlation in job autonomy, and other job-related metrics. This aggregated data provided a foundation for understanding the base conditions of the workplace and any preliminary patterns indicating the persistence of individual agency.
-
-Visual representations, such as graphs and tables, illustrated the distribution of job satisfaction, free will beliefs, and the relationship between the two. These visuals helped to convey the depth and nuances of the autonomy persistence observed in the American data.
-
-The appendices include detailed statistical tables, additional graphs showing complex data relationships, and extensive notes on the data cleaning and processing methodology.
-
-This description of the dataset was written with the general ethical practices of demographic research in mind and provides a narrative for a subset of data focused on America.
 
 # Results {#sec-results}
-A173 free will
-c033 job satisfaction
-c034 decisions in the job
-F198 Fate versus control
-G023 autonomous individual
-C031 degree of pride in your work
-X003 Age
-X001 Sex
+## Amazon Mechanical Turk Sample
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-corst2
+#| fig-cap: Correlation Matrix for Psychological Constructs measured in Study 2 of Feldman et al. (2017)
+#| fig-width: 10
+#| fig-height: 10
+
+satisfaction_data_usa_rel_num <- satisfaction_data_usa_rel %>% dplyr::select(-Age, -Sex, -age_group)
+cor_matrix <- cor(satisfaction_data_usa_rel_num, use = 'pairwise.complete.obs')
+
+# Now, cor_matrix contains your full correlation matrix
+corrplot(cor_matrix, method = "circle", type='full', tl.col="black", sig.level = 0.05, insig = "blank")
 
 
+cor_fw_js1 <- cor.test(satisfaction_data_usa_rel$`Belief in Free Will (T1)`, 
+                   satisfaction_data_usa_rel$`Job Satisfaction (T1)`, method = "pearson")
+
+
+cor_fw_js1_correlation_coefficient <- round(cor_fw_js1$estimate,2)
+cor_fw_js1_p_value <- cor_fw_js1$p.value
+cor_fw_js1_ci <- round(cor_fw_js1$conf.int,2)
+
+cor_fw_js2 <- cor.test(satisfaction_data_usa_rel$`Belief in Free Will (T1)`, 
+                   satisfaction_data_usa_rel$`Job Satisfaction (T2)`, method = "pearson")
+
+
+cor_fw_js2_correlation_coefficient <- round(cor_fw_js2$estimate,2)
+cor_fw_js2_p_value <- cor_fw_js2$p.value
+cor_fw_js2_ci <- round(cor_fw_js2$conf.int,2)
+
+cor_fw_jaut1 <- cor.test(satisfaction_data_usa_rel$`Belief in Free Will (T1)`, 
+                   satisfaction_data_usa_rel$`Job Autonomy (T1)`, method = "pearson")
+
+
+cor_fw_jaut1_correlation_coefficient <- round(cor_fw_jaut1$estimate,2)
+cor_fw_jaut1_p_value <- cor_fw_jaut1$p.value
+cor_fw_jaut1_ci <- round(cor_fw_jaut1$conf.int,2)
+```
+In exploring free will beliefs and their impact on job satifaction in the context of American Amazon Mechanical Turk workers, our study replicates and extends Feldman et al.'s results. As seen in @fig-corst2, most variables are significantly correlated with each other, with the highest correlations being unsurprisingly between the two measurements of Job satisfaction. Locus of control lacks any significant correlations, which together with its low reliability coefficient designates it as a less decisive control variable. The most important relationship, however, is between free will beliefs and job satisfaction: The belief in free will was significantly positively correlated with job satisfaction both at Time 1 (*r* = `r cor_fw_js1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js1_ci[1]`, `r cor_fw_js1_ci[2]`]) and at Time 2 ( (r = `r cor_fw_js2_correlation_coefficient`, *p* <.001, CI [`r cor_fw_js2_ci[1]`, `r cor_fw_js1_ci[2]`])). However, this correlation is not as strong as the one between free will beliefs and job autonomy (*r* = `r cor_fw_jaut1_correlation_coefficient`, *p* <.001, CI [`r cor_fw_jaut1_ci[1]`, `r cor_fw_jaut1_ci[2]`]). This supports the claim that job autonomy may be the most important mediating variable between free will beliefs and job satisfaction. Moreover, a step-wise multiple regression on job satisfaction with all psychological agency constructs (full results in @sec-apx-stepwise) confirmed that the effect of free will beliefs on job satisfaction is robust and the strongest relative impact, even when controlling for other agency constructs (Time 1: *p* < 0.034; Time 2: *p* < 0.031).
+
+
+The replication of study 2 of @feldman2017 supports the claim that there is a direct positive correlation between the belief in free will and job satisfaction over time and controlling for other psychological agency constructs.
+
+
+
+### Demographic Factors
+@fig-ageboxplotst2 shows that there are slight differences in the median belief in free will among the age groups. However, these differences were not found to be statistically significant, as shown using ANOVA (*F*(4, 204) = 1.886, *p* = .114), even when collapsing individuals over 50 into one age group (*F*(3, 205) = 2.08, *p* = .257). Similarly, using linear regression with Age Group as an interaction term, we do not observe a significant effect of age on the relationship between the belief in free will and job satisfaction.
+
+Looking at sex (@fig-sexboxplotst2), on the other hand, we observe a significant difference in the belief in free will, with women having on average higher ratings of believing in free will (*p* < 0.05). However, the effect of sex on the relationship between free will beliefs and job satisfaction has not been found to be significant (*p* = 0.58).
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-ageboxplotst2
+#| fig-cap: Belief in free will among US-American Amazon Mechanical Turk Workers by Age Group
+
+ggplot(satisfaction_data_usa_rel, aes(x = age_group, y = `Belief in Free Will (T1)`)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(
+       x = "Age Group",
+       y = "Belief in Free Will") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  + theme_minimal()
+```
+
+```{r, include=FALSE, echo=FALSE}
+leveneTest(`Belief in Free Will (T1)` ~ age_group, data = satisfaction_data_usa_rel) # assumption met because p-value is 0.08
+
+anova_result <- aov(`Belief in Free Will (T1)` ~ age_group, data = satisfaction_data_usa_rel)
+summary(anova_result)
+model <- lm(`Job Satisfaction (T1)`~ `Belief in Free Will (T1)` * age_group, data = satisfaction_data_usa_rel)
+summary(model)
+t.test(`Belief in Free Will (T1)` ~ Sex, data = satisfaction_data_usa_rel)
+
+lm_interaction <- lm(`Job Satisfaction (T1)` ~ `Belief in Free Will (T1)` * factor(Sex), data = satisfaction_data_usa_rel)
+summary(lm_interaction)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-sexboxplotst2
+#| fig-cap: Belief in free will among US-American Amazon Mechanical Turk Workers by Sex
+
+ggplot(satisfaction_data_usa_rel, aes(x = factor(Sex, labels = c("Male", "Female")), y = `Belief in Free Will (T1)`)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(
+       x = "Sex",
+       y = "Belief in Free Will") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  + theme_minimal()
+
+
+
+```
+
+
+## National Sample (WVS)
 
 
 
@@ -118,28 +392,41 @@ Weaknesses and next steps should also be included.
 
 \appendix
 
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+# Appendix {sec-appendix}
+## Step-Wise regression results {sec-apx-stepwise} 
 
 ```{r}
 #| eval: true
 #| echo: false
 #| message: false
 #| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+full_model_t1 <- lm(`Job Satisfaction (T1)` ~ `Belief in Free Will (T1)` + `Self-Esteem` + `Self-Efficacy` + `Self-Control` + `Locus of Control` + `Implicit Beliefs`, data = satisfaction_data_usa_rel)
+
+# Perform stepwise regression using AIC as the criterion
+step_model_t1 <- stepAIC(full_model_t1, direction = "both", trace = FALSE)
+
+# Summary of the final model to get coefficients, R-squared, ANOVA, and confidence intervals
+summary(step_model_t1)
+
+# ANOVA table for the model
+anova(step_model_t1)
+
+# Confidence intervals for the model coefficients
+confint(step_model_t1, level = 0.95)
+
+full_model_t2 <- lm(`Job Satisfaction (T2)` ~ `Belief in Free Will (T1)` + `Self-Esteem` + `Self-Efficacy` + `Self-Control` + `Locus of Control` + `Implicit Beliefs`, data = satisfaction_data_usa_rel)
+
+# Perform stepwise regression using AIC as the criterion
+step_model_t2 <- stepAIC(full_model_t2, direction = "both", trace = FALSE)
+
+# Summary of the final model to get coefficients, R-squared, ANOVA, and confidence intervals
+summary(step_model_t2)
+
+# ANOVA table for the model
+anova(step_model_t2)
+
+# Confidence intervals for the model coefficients
+confint(step_model_t2, level = 0.95)
 
 ```
 

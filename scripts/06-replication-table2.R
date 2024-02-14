@@ -97,6 +97,31 @@ alpha_jaut2 <- alpha(jaut2_items)
 alpha_jaut2 <- alpha_jaut2$total$raw_alpha
 alpha_jaut2 <- round(alpha_jaut2,2)
 
+locus_items <- satisfaction_data_usa[, c("lc1", "lc2", "lc3", "lc4", "lc5", "lc6", "lc7", "lc8", "lc9", "lc10", "lc11", "lc12", "lc13")]
+alpha_locus <- alpha(locus_items, check.keys=TRUE)
+alpha_locus <- alpha_locus$total$raw_alpha
+alpha_locus <- round(alpha_locus,2)
+
+self_eff_items <- satisfaction_data_usa[, c("selfeff_1", "selfeff_2", "selfeff_3")]
+alpha_self_eff <- alpha(self_eff_items)
+alpha_self_eff <- alpha_self_eff$total$raw_alpha
+alpha_self_eff <- round(alpha_self_eff,2)
+
+self_est_items <- satisfaction_data_usa[, c("selfest_1", "selfest_2", "selfest_3", "selfest_4", "selfest_5", "selfest_6", "selfest_7", "selfest_8", "selfest_9", "selfest_10")]
+alpha_self_est <- alpha(self_est_items, check.keys=TRUE)
+alpha_self_est <- alpha_self_est$total$raw_alpha
+alpha_self_est <- round(alpha_self_est,2)
+
+self_con_items <- satisfaction_data_usa[, c("selfcon_1", "selfcon_2", "selfcon_3", "selfcon_4", "selfcon_5", "selfcon_6", "selfcon_7", "selfcon_8", "selfcon_9", "selfcon_10", "selfcon_11", "selfcon_12", "selfcon_13")]
+alpha_self_con <- alpha(self_con_items, check.keys=TRUE)
+alpha_self_con <- alpha_self_con$total$raw_alpha
+alpha_self_con <- round(alpha_self_con,2)
+
+implicit_items <- satisfaction_data_usa[, c("lay_1", "lay_2", "lay_3", "lay_4", "lay_5r", "lay_6r", "lay_7r", "lay_8r")]
+alpha_implicit <- alpha(implicit_items, check.keys=TRUE)
+alpha_implicit <- alpha_implicit$total$raw_alpha
+alpha_implicit <- round(alpha_implicit,2)
+
 
 
 
