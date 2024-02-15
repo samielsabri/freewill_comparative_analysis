@@ -473,10 +473,33 @@ In our analysis, we included data up until 2017 of the World Values Survey (2017
 ### Demographic Factors
 
 ```{r,include=FALSE,message=FALSE,warning=FALSE}
+# inferential statistics age group and freewill
 anova_result <- aov(freewill ~ age_group, data =wvs_data_usa  )
 summary(anova_result)
+model <- lm(job_satisfaction~ freewill * age_group, data = wvs_data_usa)
+summary(model)
+
+# inferential statistics sex and freewill
+t.test(freewill ~ Sex, data = wvs_data_usa )
+
+lm_interaction <- lm(job_satisfaction ~ freewill * factor(Sex), data = wvs_data_usa)
+summary(lm_interaction)
 ```
-Interestingly, there are virtually no differences in the average belief in free will between the different age groups surveyed (@fig-ageboxplotwvs in @sec-appendix). ANOVA confirmed that there are no significant differences (*F*(4,12809) = 1.032, *p* = 0.358). 
+Interestingly, there are virtually no differences in the average belief in free will between the different age groups surveyed (@fig-ageboxplotwvs in @sec-apx-box). ANOVA confirmed that there are no significant differences (*F*(4,12809) = 1.032, *p* = 0.358). Age did also not influence the relationship between free will beliefs and job satisfaction (lowest *p* = 0.293). 
+However, there is a significant difference of Sex on free will beliefs (@fig-sexboxplotwvs in @sec-apx-box), with women on average having marginally higher ratings (7.69) than men (7.61) (*p* < 0.05). We could not observe any significant effect of Sex on the relationship between free will beliefs and job satisfaction (*p* = 0.40).
+
+## Comparison to Amazon Mechanical Turk Sample
+```{r}
+# Normalize free will scores between the two samples
+satisfaction_data_usa_rel_num$freewill_norm <- (satisfaction_data_usa_rel_num$`Belief in Free Will (T1)` - 1)/(6-1)
+
+wvs_data_usa$freewill_norm <- (wvs_data_usa$freewill - 1)/(10-1)
+
+freewill_norm_mean_turk <- mean(satisfaction_data_usa_rel_num$freewill_norm, na.rm = TRUE)
+
+freewill_norm_mean_wvs <- mean(wvs_data_usa$freewill_norm, na.rm = TRUE)
+
+```
 
 
 
@@ -539,7 +562,7 @@ confint(step_model_t2, level = 0.95)
 
 ```
 
-## Demographic Boxplots for World Values Survey
+## Demographic Boxplots for World Values Survey {#sec-apx-box}
 ```{r}
 #| echo: false
 #| warning: false
