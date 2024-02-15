@@ -2,7 +2,7 @@
 title: "SSRP Report based on *Agency Beliefs Over Time and Across Cultures: Free Will Beliefs Predict Higher Job Satisfaction* by Feldman et al. (2017)
  "
 author: Sami El Sabri and Liban Timir
-thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis"
+thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis. SSRP replication available at: https://doi.org/10.48152/ssrp-hrv5-ck80"
 date: 02-13-2024
 date-format: long
 format: pdf

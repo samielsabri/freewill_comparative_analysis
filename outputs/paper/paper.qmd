@@ -1,10 +1,10 @@
 ---
-title: "The Power of Liberty in the American Workplace: Unveiling the Global Impact of Free Will Perceptions on Job Satisfaction"
+title: "You Best Believe: How Believing in Free Will is Enough to be More Satisfied at the Workplace"
 author: Sami El Sabri and Liban Timir
-thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis. SSRP replication available at: https://www.socialsciencereproduction.org/reproductions/94caaeaf-7e11-4efa-9269-7729fc2e0837/index"
+thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis. SSRP replication available at: https://doi.org/10.48152/ssrp-hrv5-ck80"
 date: 02-13-2024
 date-format: long
-abstract: "This study examines the relationship between belief in free will and job satisfaction in the United States, using data from Amazon Mechanical Turk and the World Values Survey. It replicates and extends previous findings by Feldman et al. (2017), confirming that free will belief positively correlates with job satisfaction in both samples. The analysis identifies job autonomy as a key mediator in this relationship. Results highlight the significant role of free will beliefs in enhancing workplace satisfaction and emphasize the importance of considering cultural and societal factors particular to the American context"
+abstract: "This study examines the relationship between belief in free will and job satisfaction in the United States, using data from Amazon Mechanical Turk and the World Values Survey. It replicates and extends previous findings by Feldman et al. (2017), confirming that free will belief positively correlates with job satisfaction in both samples. The analysis identifies job autonomy as a key mediator in this relationship. Results highlight the significant role of free will beliefs in enhancing workplace satisfaction and emphasize the importance of considering cultural and societal factors particular to the American context."
 format: pdf
 toc: true
 number-sections: true
