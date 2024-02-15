@@ -366,7 +366,7 @@ ggplot(satisfaction_data_usa_rel, aes(x = factor(Sex, labels = c("Male", "Female
 
 ```
 
-
+\newpage
 ## National Sample (WVS)
 ```{r}
 #| echo: false
@@ -459,12 +459,12 @@ final_table <- left_join(wvs_summary_table, correlations, by = "country_code") %
   rename(`Correlation` = correlation) %>%
   mutate(Correlation = paste0(Correlation, significance)) %>% dplyr::select(-significance) %>% 
   arrange(desc(`FW Mean`))
-final_table
 
 final_table %>%
   kable("latex", booktabs = T) %>%
   kable_styling(bootstrap_options = "striped") %>%
-  footnote(general ="FW Mean = National Average of the Belief in Free Will. \n n.s. p > .05. **p < .01. ***p < .001.") %>% 
+  footnote(general ="FW Mean = National Average of the Belief in Free Will",
+            symbol = "n.s. p > .05. **p < .01. ***p < .001.") %>% 
   row_spec(which(final_table$`Country Name` == "United States"), background = "#ADD8E6")
 ```
 
@@ -473,8 +473,14 @@ In our analysis, we included data up until 2017 of the World Values Survey (2017
 ### Demographic Factors
 
 ```{r,include=FALSE,message=FALSE,warning=FALSE}
+
+wvs_data_usa$age_group <- cut(wvs_data_usa$Age,
+                    breaks = c(18, 30, 40, 50, 60, Inf),
+                    labels = c("18-30", "31-40", "41-50", "51-60", "Over 60"),
+                    right = FALSE)
+
 # inferential statistics age group and freewill
-anova_result <- aov(freewill ~ age_group, data =wvs_data_usa  )
+anova_result <- aov(freewill ~ age_group, data =wvs_data_usa)
 summary(anova_result)
 model <- lm(job_satisfaction~ freewill * age_group, data = wvs_data_usa)
 summary(model)
@@ -490,18 +496,51 @@ However, there is a significant difference of Sex on free will beliefs (@fig-sex
 
 ## Comparison to Amazon Mechanical Turk Sample
 ```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-comparison
+#| tbl-cap: Comparative Summary Statistics Between Amazon MTurk and WVS Samples
+
 # Normalize free will scores between the two samples
 satisfaction_data_usa_rel_num$freewill_norm <- (satisfaction_data_usa_rel_num$`Belief in Free Will (T1)` - 1)/(6-1)
+satisfaction_data_usa_rel_num$jobsatisfaction_norm <- (satisfaction_data_usa_rel_num$`Job Satisfaction (T1)` - 1)/(7-1)
 
 wvs_data_usa$freewill_norm <- (wvs_data_usa$freewill - 1)/(10-1)
+wvs_data_usa$jobsatisfaction_norm <- (wvs_data_usa$job_satisfaction - 1)/(10-1)
 
-freewill_norm_mean_turk <- mean(satisfaction_data_usa_rel_num$freewill_norm, na.rm = TRUE)
+# Calculate means and sd of those normalized scores
 
-freewill_norm_mean_wvs <- mean(wvs_data_usa$freewill_norm, na.rm = TRUE)
+freewill_norm_mean_turk <- round(mean(satisfaction_data_usa_rel_num$freewill_norm, na.rm = TRUE),2)
+freewill_norm_sd_turk <- round(sd(satisfaction_data_usa_rel_num$freewill_norm, na.rm = TRUE),2)
+jobsat_norm_mean_turk <- round(mean(satisfaction_data_usa_rel_num$jobsatisfaction_norm, na.rm = TRUE),2)
+jobsat_norm_sd_turk <- round(sd(satisfaction_data_usa_rel_num$jobsatisfaction_norm, na.rm = TRUE),2)
+
+freewill_norm_mean_wvs <- round(mean(wvs_data_usa$freewill_norm, na.rm = TRUE),2)
+freewill_norm_sd_wvs <- round(sd(wvs_data_usa$freewill_norm, na.rm = TRUE),2)
+jobsat_norm_mean_wvs <- round(mean(wvs_data_usa$jobsatisfaction_norm, na.rm = TRUE),2)
+jobsat_norm_sd_wvs <- round(sd(wvs_data_usa$jobsatisfaction_norm, na.rm = TRUE),2)
+
+comparative_summary_table <- data.frame(
+  "Variable" = c("Belief in Free Will", "Job Satisfaction"),
+  "Mean" = c(freewill_norm_mean_turk, jobsat_norm_mean_turk),
+  "SD" = c(freewill_norm_sd_turk, jobsat_norm_sd_turk),
+  "Mean" = c(freewill_norm_mean_wvs, jobsat_norm_mean_wvs),
+  "SD" = c(freewill_norm_sd_wvs,jobsat_norm_sd_wvs),
+  check.names = FALSE)
+
+comparative_summary_table %>%
+  kable("latex", booktabs = T) %>%
+  kable_styling(bootstrap_options = "striped") %>% add_header_above(c(" " = 1, "MTurk Sample" = 2, "WVS Sample" = 2))
+
+t_test_result_fw <- t.test(satisfaction_data_usa_rel_num$freewill_norm, wvs_data_usa$freewill_norm)
+
+t_test_result_js <- t.test(satisfaction_data_usa_rel_num$jobsatisfaction_norm, wvs_data_usa$jobsatisfaction_norm)
+
 
 ```
 
-
+Since the two samples use different scales to measure belief in free will and job satisfaction, we normalized the values (mapping it onto a scale from 0 to 1), such that we can compare them directly (@tbl-comparison). Results show that the average rating of free will beliefs is higher in the Amazon Mechanical Turk Sample, than in the national sample (*p* < 0.001, CI [`r t_test_result_fw$conf.int[1]`, `r t_test_result_fw$conf.int[2]`]). The opposite trend can be observed in the ratings of job satisfaction, where the national-level WVS sample has on average higher values (*p* < 0.001, CI [`r t_test_result_js$conf.int[1]`, `r t_test_result_js$conf.int[2]`]).
 
 \newpage
 
@@ -569,12 +608,6 @@ confint(step_model_t2, level = 0.95)
 #| message: false
 #| label: fig-ageboxplotwvs
 #| fig-cap: "Belief in Free Will by Age Group in WVS 1981-2022"
-
-wvs_data_usa$age_group <- cut(wvs_data_usa$Age,
-                    breaks = c(18, 30, 40, 50, 60, Inf),
-                    labels = c("18-30", "31-40", "41-50", "51-60", "Over 60"),
-                    right = FALSE)
-
 
 wvs_data_usa %>% drop_na(age_group) %>% ggplot(aes(x = age_group, y = freewill)) +
   geom_boxplot(fill = "lightblue") +
