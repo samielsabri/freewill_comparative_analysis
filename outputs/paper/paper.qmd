@@ -1,12 +1,12 @@
 ---
 title: "The Power of Liberty in the American Workplace: Unveiling the Global Impact of Free Will Perceptions on Job Satisfaction"
-subtitle: "Nowhere near done yet! We had significant issues with our last dataset and had to restart, so bare with us."
 author: Sami El Sabri and Liban Timir
 thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis. SSRP replication available at: https://www.socialsciencereproduction.org/reproductions/94caaeaf-7e11-4efa-9269-7729fc2e0837/index"
 date: 02-13-2024
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This study examines the relationship between belief in free will and job satisfaction in the United States, using data from Amazon Mechanical Turk and the World Values Survey. It replicates and extends previous findings by Feldman et al. (2017), confirming that free will belief positively correlates with job satisfaction in both samples. The analysis identifies job autonomy as a key mediator in this relationship. Results highlight the significant role of free will beliefs in enhancing workplace satisfaction and emphasize the importance of considering cultural and societal factors particular to the American context"
 format: pdf
+toc: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -40,9 +40,9 @@ In recent years, the intersection between personal beliefs in free will and cogn
 
 They executed three distinct studies: the first with real estate agents in Taiwan over three months, the second involving American workers over six months using Amazon Mechanical Turk, and the third utilizing a large cross-cultural sample from the World Values Survey encompassing 16 countries. This multifaceted approach allowed them to assess the generalizability of free will beliefs as predictors of job satisfaction across various cultural contexts and professional environments, providing a robust examination of how these beliefs influence job satisfaction over time.
 
-Utilizing the same dataset and a similar methodology to @feldman2017, we aim to replicate their results in the context of the United States, a very heterogenous country that is characterized by a high importance of individualist, but also cultural diversity and socioeconomic inequality. While Feldman et al. did investigate the relationship between the belief in free will and job satisfaction in the United States, they did not integrate these results to the cross-cultural analysis, as the US were not included in the sample of 16 countries. This paper, therefore, seeks to fill this gap and reproduce these aspects of the Feldman et al. paper: (1) the relationship between the belief in free will and job satisfaction applies to the context of American adults working at Amazon Mechanical Turk (2) free will is a significant predictor of job satisfaction at the national-level, using the World Values Survey. We will also consider whether there are any significant differences between the national-level data and the Amazon Mechanical Turk data. The estimand is the correlation between the belief in free will and job satisfaction. Our reproduction was conducted using the statistical programming language R [@citeR]. In the data analysis and visualization process, we also made use of the following R packages: tidyverse [@citetidyverse], dplyr [@citedplyr], knitr [@citeknitr], kableExtra [@citekExtra], purrr [@citepurrr], psych [@citepsych], car [@citecar], MASS [@citeMASS], and countrycode [@citecc].
+Utilizing the same dataset and a similar methodology to @feldman2017, we aim to replicate their results in the context of the United States, a very heterogenous country that is characterized by a high importance of individualist, but also cultural diversity and socioeconomic inequality. While Feldman et al. did investigate the relationship between the belief in free will and job satisfaction in the United States, they did not integrate these results to the cross-cultural analysis, as the US were not included in the sample of 16 countries. This paper, therefore, seeks to fill this gap and reproduce these aspects of the Feldman et al. paper: (1) the relationship between the belief in free will and job satisfaction applies to the context of American adults working at Amazon Mechanical Turk (2) free will is a significant predictor of job satisfaction at the national-level, using the World Values Survey. We will also consider whether there are any significant differences between the national-level data and the Amazon Mechanical Turk data. The estimand is the correlation between the belief in free will and job satisfaction. Utilizing Amazon Mechanical Turk and World Values Survey data, we found that belief in free will significantly correlates with job satisfaction both at individual and national levels. Additionally, we found job autonomy as a critical mediator in this relationship, while other agency constructs and demographic factors play a less important role in impacting workplace satisfaction across diverse American contexts. We also found American participants to be among the world's highest believers in free will, further emphasizing the importance of considering the local context.
 
-We begin our paper with a closer look at the data source and measurement (@sec-data), followed by a selection of relevant results (@sec-results). Finally, we will conclude with a discussion of our findings to integrate our replication with the original paper by @feldman2017 and the broader literature on free will beliefs. We will also discuss potential ethical biases, limitations, and future directions. This shift towards recognizing and nurturing free will beliefs could serve as a key lever for boosting job satisfaction, employee engagement, and organizational performance across the United States. \### TALK ABOUT FINDINGS HERE###
+We begin our paper with a closer look at the data source and measurement (@sec-data), followed by a selection of relevant results (@sec-results). Finally, we will conclude with a discussion of our findings to integrate our replication with the original paper by @feldman2017 and the broader literature on free will beliefs (@sec-discussion). We will also discuss potential ethical biases, limitations, and future directions. Our reproduction was conducted using the statistical programming language R [@citeR]. In the data analysis and visualization process, we also made use of the following R packages: tidyverse [@citetidyverse], dplyr [@citedplyr], knitr [@citeknitr], kableExtra [@citekExtra], purrr [@citepurrr], psych [@citepsych], car [@citecar], MASS [@citeMASS], and countrycode [@citecc].
 
 # Data {#sec-data}
 
@@ -167,7 +167,7 @@ reliability_scores <- data.frame(
   Rows = c("Job Satisfaction (T1)", "Job Satisfaction (T2)", "Belief in Free Will (T1)", 
            "Job Autonomy (T1)", "Job Autonomy (T2)", "Locus of Control", 
            "Implicit Beliefs", "Self-Esteem", "Self-Efficacy", "Self-Control"),
-  "Reliability Coefficient" = c(alpha_js1, alpha_js2, alpha_freewill, alpha_jaut1, alpha_jaut2, alpha_locus, alpha_self_eff, alpha_self_est, alpha_implicit, alpha_self_con)
+  "Reliability Coefficient" = c(alpha_js1, alpha_js2, alpha_freewill, alpha_jaut1, alpha_jaut2, alpha_locus, alpha_self_eff, alpha_self_est, alpha_implicit, alpha_self_con), check.names = FALSE
 )
 ```
 
@@ -184,6 +184,7 @@ kable(reliability_scores)
 ## Data Characteristics {#sec-characteristics}
 
 The original research survey data published by @feldman2017 did not require any further data cleaning. Using the aforementioned constructs which are derived from their respective set of survey questions, we were able to replicate all the means and standard deviations, as seen in @tbl-st2summary.
+@fig-fwbarst2 shows how in this sample, no participant indicated a free will belief rating less than 3, and that the distribution is strongly left-skewed. The distribution of ages, on the other hand, is right-skewed, with most participants being between 30 and 40 years old (@fig-agebarst2)
 
 ```{r}
 #| echo: false
@@ -249,7 +250,42 @@ satisfaction_data_usa_summary <- data.frame(
 kable(satisfaction_data_usa_summary)
 ```
 
-The World Values Survey dataset needed some additional cleaning steps, filtering for certain variables of interest and only for surveys based in the United States of America. See @tbl-wvssummary for summary statistics of selected psychological constructs.
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-fwbarst2
+#| fig-cap: Distribution of Free Will Beliefs among Amazon MTurk workers as measured in Feldman et al. (2018)
+#| fig-width: 2.5
+#| fig-height: 2.5
+
+satisfaction_data_usa_rel %>% ggplot(aes(x=`Belief in Free Will (T1)`)) +
+  geom_histogram(binwidth = 0.5, fill = "lightblue", color = "black") +
+  xlim(0,6) +
+  labs(
+       x = "Belief in Free Will Rating",
+       y = "Frequency") +
+  theme_minimal()
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-agebarst2
+#| fig-cap: Distribution of Ages among Amazon MTurk workers as measured in Feldman et al. (2018)
+#| fig-width: 2.5
+#| fig-height: 2.5
+
+satisfaction_data_usa_rel %>% ggplot(aes(x=`Age`)) +
+  geom_histogram(binwidth = 4, fill = "lightblue", color = "black") +
+  
+  labs(
+       x = "Age",
+       y = "Count") +
+  theme_minimal()
+```
+The World Values Survey dataset needed some additional cleaning steps, filtering for certain variables of interest and only for surveys based in the United States of America. See @tbl-wvssummary for summary statistics of selected psychological constructs. Similarly to the MTurk data, free will belief ratings are heavily left-skewed with most respondents indicating high beliefs in free will (@fig-fwbarwvs). The age distribution, however, is much more uniform than in the MTurk data, indicating greater representativeness of the sample (@fig-agebarwvs).
 
 ```{r}
 #| echo: false
@@ -296,7 +332,41 @@ kable(wvs_data_usa_summary)
   
 ```
 
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-fwbarwvs
+#| fig-cap: "Distribution of Free Will Beliefs among WVS respondents 1981-2022"
+#| fig-width: 2.5
+#| fig-height: 2.5
 
+wvs_data_usa %>% ggplot(aes(x=freewill)) +
+  geom_bar(binwidth = 1, fill = "lightblue", color = "black") +
+  labs(
+       x = "Belief in Free Will Rating",
+       y = "Frequency") +
+  theme_minimal()
+```
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-agebarwvs
+#| fig-cap: Distribution of Ages among among WVS respondents 1981-2022
+#| fig-width: 2.5
+#| fig-height: 2.5
+
+wvs_data_usa %>% ggplot(aes(x=`Age`)) +
+  geom_histogram(binwidth = 4, fill = "lightblue", color = "black") +
+  
+  labs(
+       x = "Age",
+       y = "Count") +
+  theme_minimal()
+```
+
+\newpage
 # Results {#sec-results}
 
 ## Amazon Mechanical Turk Sample
@@ -341,7 +411,7 @@ cor_fw_jaut1_p_value <- cor_fw_jaut1$p.value
 cor_fw_jaut1_ci <- round(cor_fw_jaut1$conf.int,2)
 ```
 
-In exploring free will beliefs and their impact on job satisfaction in the context of American Amazon Mechanical Turk workers, our study replicates and extends Feldman et al.'s results. As seen in @fig-corst2, most variables are significantly correlated with each other, with the highest correlations being unsurprisingly between the two measurements of Job satisfaction. Locus of control lacks any significant correlations, which together with its low reliability coefficient designates it as a less decisive control variable. The most important relationship, however, is between free will beliefs and job satisfaction: The belief in free will was significantly positively correlated with job satisfaction both at Time 1 (*r* = `r cor_fw_js1_correlation_coefficient`, *p* \<.001, CI \[`r cor_fw_js1_ci[1]`, `r cor_fw_js1_ci[2]`\]) and at Time 2 ( (r = `r cor_fw_js2_correlation_coefficient`, *p* \<.001, CI \[`r cor_fw_js2_ci[1]`, `r cor_fw_js1_ci[2]`\])). However, this correlation is not as strong as the one between free will beliefs and job autonomy (*r* = `r cor_fw_jaut1_correlation_coefficient`, *p* \<.001, CI \[`r cor_fw_jaut1_ci[1]`, `r cor_fw_jaut1_ci[2]`\]). This supports the claim that job autonomy may be the most important mediating variable between free will beliefs and job satisfaction. Moreover, a step-wise multiple regression on job satisfaction with all psychological agency constructs (full results in @sec-apx-stepwise) confirmed that the effect of free will beliefs on job satisfaction is robust and the strongest relative impact, even when controlling for other agency constructs (Time 1: *p* \< 0.034; Time 2: *p* \< 0.031).
+In exploring free will beliefs and their impact on job satisfaction in the context of American Amazon Mechanical Turk workers, our study replicates and extends Feldman et al.'s results. As seen in @fig-corst2, most variables are significantly correlated with each other, with the highest correlations being unsurprisingly between the two measurements of Job satisfaction. Locus of control lacks any significant correlations, which together with its low reliability coefficient designates it as a less decisive control variable. The most important relationship, however, is between free will beliefs and job satisfaction: The belief in free will was significantly positively correlated with job satisfaction both at Time 1 (*r* = `r cor_fw_js1_correlation_coefficient`, *p* \<.001, CI \[`r cor_fw_js1_ci[1]`, `r cor_fw_js1_ci[2]`\]) and at Time 2 (r = `r cor_fw_js2_correlation_coefficient`, *p* \<.001, CI \[`r cor_fw_js2_ci[1]`, `r cor_fw_js1_ci[2]`\]). However, this correlation is not as strong as the one between free will beliefs and job autonomy (*r* = `r cor_fw_jaut1_correlation_coefficient`, *p* \<.001, CI \[`r cor_fw_jaut1_ci[1]`, `r cor_fw_jaut1_ci[2]`\]). This supports the claim that job autonomy may be the most important mediating variable between free will beliefs and job satisfaction. Moreover, a step-wise multiple regression on job satisfaction with all psychological agency constructs (full results in @sec-apx-stepwise) confirmed that the effect of free will beliefs on job satisfaction is robust and the strongest relative impact, even when controlling for other agency constructs (Time 1: *p* \< 0.034; Time 2: *p* \< 0.031).
 
 The replication of study 2 of @feldman2017 supports the claim that there is a direct positive correlation between the belief in free will and job satisfaction over time and controlling for other psychological agency constructs.
 
@@ -529,7 +599,7 @@ summary(lm_interaction)
 
 Interestingly, there are virtually no differences in the average belief in free will between the different age groups surveyed (@fig-ageboxplotwvs in @sec-apx-box). ANOVA confirmed that there are no significant differences (*F*(4,12809) = 1.032, *p* = 0.358). Age did also not influence the relationship between free will beliefs and job satisfaction (lowest *p* = 0.293). However, there is a significant difference of Sex on free will beliefs (@fig-sexboxplotwvs in @sec-apx-box), with women on average having marginally higher ratings (7.69) than men (7.61) (*p* \< 0.05). We could not observe any significant effect of Sex on the relationship between free will beliefs and job satisfaction (*p* = 0.40).
 
-## Comparison to Amazon Mechanical Turk Sample
+### Comparison to Amazon Mechanical Turk Sample
 
 ```{r}
 #| echo: false
@@ -573,10 +643,17 @@ t_test_result_fw <- t.test(satisfaction_data_usa_rel_num$freewill_norm, wvs_data
 
 t_test_result_js <- t.test(satisfaction_data_usa_rel_num$jobsatisfaction_norm, wvs_data_usa$jobsatisfaction_norm)
 
+fwconfint1 <- round(t_test_result_fw$conf.int[1],2)
+fwconfint2 <- round(t_test_result_fw$conf.int[2],2)
+
+jsconfint1 <- round(t_test_result_js$conf.int[1],2)
+jsconfint2 <- round(t_test_result_js$conf.int[2],2)
+
+
 
 ```
 
-Since the two samples use different scales to measure belief in free will and job satisfaction, we normalized the values (mapping it onto a scale from 0 to 1), such that we can compare them directly (@tbl-comparison). Results show that the average rating of free will beliefs is higher in the Amazon Mechanical Turk Sample, than in the national sample (*p* \< 0.001, CI \[`r t_test_result_fw$conf.int[1]`, `r t_test_result_fw$conf.int[2]`\]). The opposite trend can be observed in the ratings of job satisfaction, where the national-level WVS sample has on average higher values (*p* \< 0.001, CI \[`r t_test_result_js$conf.int[1]`, `r t_test_result_js$conf.int[2]`\]).
+Since the two samples use different scales to measure belief in free will and job satisfaction, we normalized the values (mapping it onto a scale from 0 to 1), such that we can compare them directly (@tbl-comparison). Results show that the average rating of free will beliefs is higher in the Amazon Mechanical Turk Sample, than in the national sample (*p* \< 0.001, CI \[`r fwconfint1 `, `r fwconfint2 `\]). The opposite trend can be observed in the ratings of job satisfaction, where the national-level WVS sample has on average higher values (*p* \< 0.001, CI \[`r jsconfint1`, `r jsconfint2`\]).
 
 \newpage
 
