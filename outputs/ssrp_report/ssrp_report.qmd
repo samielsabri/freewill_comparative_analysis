@@ -33,7 +33,7 @@ library(countrycode)
 # Loading the cleaned data
 satisfaction_data_taiwan <- read_csv(here::here("inputs/data/study_1/FW satisfaction-Study 1-data.csv"))
 satisfaction_data_usa <- read_csv(here::here("inputs/data/study_2/FW satisfaction-Study 2-data.csv"))
-wvs_data <- read_csv(here::here("inputs/data/study_3/wvs_filtered_replication.csv"))
+wvs_data <- read_csv(here::here("inputs/data/study_3/wvs_filtered.csv"))
 
 ```
 
@@ -231,7 +231,7 @@ final_table_s2 <- data.frame(
                "Job Autonomy (T1)", "Job Autonomy (T2)", "Locus of Control", "Implicit Beliefs",
                "Self-Esteem", "Self-Efficacy", "Self-Control"),
   "Reliability Coefficient" = c(alpha_js1, alpha_js2, alpha_freewill, alpha_jaut1, alpha_jaut2,
-                                alpha_locus, alpha_implicit, alpha_selfest, alpha_selfeff, alpha_self_con),
+                                alpha_locus, alpha_implicit, alpha_self_est, alpha_self_eff, alpha_self_con),
   Mean = c(
            satisfaction_data_usa_summary$mean_js1, 
            satisfaction_data_usa_summary$mean_js2,
