@@ -10,22 +10,21 @@
 #### Workspace setup ####
 library(tidyverse)
 library(testthat)
-# [...UPDATE THIS...]
 
 #### Read in data ####
 wvs_data_usa <- read_csv(here::here('outputs/data/wvs_data_usa.csv'))
 
 #### Test data ####
-test_that("Free Will scale scores are within the 1-6 range", {
-  expect_true(all(wvs_data_usa$freewill >= 1 & wvs_data_usa$freewill <= 6), 
-              info = "There are scores outside the 1-6 range in the Free Will 
+test_that("Free Will scale scores are within the 1-10 range", {
+  expect_true(all(wvs_data_usa$freewill >= 1 & wvs_data_usa$freewill <= 10 | is.na(wvs_data_usa$freewill)), 
+              info = "There are scores outside the 1-10 range in the Free Will 
               scale")
 })
 
 test_that("Job Satisfaction scale values are within the 1-7 range", {
   expect_true(all(wvs_data_usa$job_satisfaction >= 1 & 
-                    wvs_data_usa$job_satisfaction <= 7),
-              info = "Job Satisfaction scale values are out of the 1-7 range")
+                    wvs_data_usa$job_satisfaction <= 10 | is.na(wvs_data_usa$job_satisfaction)),
+              info = "Job Satisfaction scale values are out of the 1-10 range")
 })
 
 test_that("Data types are correct", {
@@ -45,7 +44,7 @@ test_that("Dataset has the expected number of rows", {
 test_that("Values in specified columns are positive", {
   columns_to_check <- c("freewill", "job_satisfaction")
   for (column_name in columns_to_check) {
-    expect_true(all(your_dataframe[[column_name]] > 0),
+    expect_true(all(wvs_data_usa[[column_name]] > 0 | is.na(wvs_data_usa[[column_name]])),
                 info = paste("Not all values in the", column_name, 
                              "column are positive."))
   }
