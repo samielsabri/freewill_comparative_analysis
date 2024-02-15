@@ -580,19 +580,26 @@ Since the two samples use different scales to measure belief in free will and jo
 
 \newpage
 
-# Discussion
+# Discussion {#sec-discussion}
 
-## First discussion point {#sec-first-point}
+## Effect of Free Will Beliefs
+The main result of our analysis is that the belief in free will is sufficient to positively influence one's job satisfaction. Both the Amazon Mechanical Turk and WVS data sources showed significant positive correlations between these two psychological constructs. Free will beliefs are found to be  integral to psychological well-being and motivation, and are commonly linked to agency, autonomy, and responsibility [@wang2009]. By fostering an environment that supports these values, organizations can enhance job satisfaction and performance [@stillman2010]. Moreover, we found that job autonomy is the most important factor in mediating the relationship between free will beliefs and job satisfaction. When employees feel they have the freedom to make decisions and control their work processes, this autonomy reinforces their free will beliefs, leading to higher job satisfaction [@goezukara2016]. Our analysis shows that this applies directly to the workplace, since we found a robust effect of free will beliefs on job satisfaction, even when controlling for other psychological agency constructs, suggests a strong and direct relationship. As @clark2017 have found, belief in free will also alleviates distress and anxiety in regards to punishment and moral judgments, which can further positively impact satisfaction at work. This is crucial information, since it can help us effectively design targeted interventions with long-term benefits for employees and organizations [@feldman2017].
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
 
-## Second discussion point
+## Demographic Variable Effects
+Our findings suggest that while there are slight differences in the median belief in free will among different age groups, these differences do not reach statistical significance. This outcome indicates that the belief in free will might be relatively stable across different stages of adult life, not significantly impacted by age-related factors such as life experience and generational values, but rather by cultural factors @feltz2009. Our findings also suggest that a slight differences based on sex, with women reporting higher beliefs in free will. This finding could reflect underlying gender-related socialization processes, where differing societal expectations and roles for men and women might influence their perceptions of autonomy and control [@baumeister1988]. However, even when found significant, this effect was marginal in both samples, suggesting that the influence of free will beliefs on job satisfaction might operate independently of these demographic factors. This independence has strong implications for potential interventions interventions aimed at enhancing employees' sense of autonomy and control could be broadly applicable and beneficial [@sheldon2001].
 
-## Third discussion point
+Nevertheless, unobserved demographic factors could have also contributed to the significant difference in free will beliefs and job satisfaction ratings between the Amazon MTurk sample and the WVS sample. Latter is much more representative due to its larger sample size, more thorough survey methodology, and more equal distribution of ages and occupations. The Amazon MTurk sample was much more restricted, with a much lower median age, and was not cross-occupational in the same sense the more comprehensive WVS sample is. The nature of Amazon MTurk as a novel and mostly low-wage job platform could also explain the comparatively lower job satisfaction rates and higher beliefs in free will.
 
-## Weaknesses and next steps
+## Cultural Differences
+Our findings indicate that correlations are now statistically significant for all countries in the sample which suggests a pervasive and possibly strengthening relationship between belief in free will and job satisfaction globally. This contrasts with Feldman et al.'s (2018) findings, where the significance of these correlations may have varied across countries. This change could be indicative of a global trend towards greater recognition of the importance of autonomy and personal agency in job satisfaction [@goezukara2016]. Our finding that the United States has a high average belief in free will, second only to Mexico, can be contextualized within the framework of cultural values and individualism. Based on how American cultural norms and values are shaped by freedom, independence, and liberty, the perception and valuation of free will can be expected to be considerably higher than when compared to other countries, influencing the strength of its relationship with job satisfaction. Hofstede's cultural dimensions theory, which explores the impact of a society's culture on the values of its members and how these values relate to behavior, suggests that societies with high individualism scores tend to place a greater emphasis on personal freedom and autonomy, which could contribute to stronger beliefs in free will [@hofstede2001]. Again, this has direct implications for interventions operating within the American context, suggesting a strong focus on such values and constructs to increase overall worker's satisfaction.
 
-Weaknesses and next steps should also be included.
+## Limitations
+Potential weaknesses include the overreliance on self-reporting measures, which are subject to biases; the cross-sectional nature of some studies, which limits causal inference; and the potential for cultural nuances to be oversimplified or to not be fully captured by the statistical measures used.  Additionally, the concept of free will can vary significantly across different cultures. When dealing with constructs that deeply intertwine with personal identity and cultural beliefs it is very important to design survey questions appropriately and make sure to not overstep any boundaries. However, the resulting general nature of these questions could limit capturing the full scope of the concept. The standardized scales used to measure the constructs may have therefore not adequately captured the underlying construct, despite high reliability coefficients. 
+
+## Future Directions
+The next steps to take would be to further explore societal changes over time and individual differences in the value of free will, which would be possible due to the longitudinal nature of the WVS data. Further research couldalso  investigate the impact of emerging technologies and digital platforms on perceptions of free will, examining how online behavior and the emergence of artificial intelligence influences or reflects these beliefs. Additionally, interdisciplinary approaches combining psychology, sociology, and neuroscience could offer deeper insights into the biological underpinnings and social determinants of free will beliefs. Exploring these areas could significantly enhance our understanding of free will's role in modern society and individual psychology, and help us even more in designing appropriate interventions not only at the workspace but other spheres of our lives.
+
 
 \newpage
 
@@ -602,6 +609,7 @@ Weaknesses and next steps should also be included.
 
 ## Control Variables Survey Items {#sec-apx-controls}
 **Self-Control Scale**
+
 1. I am good at resisting temptation.
 2. I have a hard time breaking bad habits. (R)
 3. I am lazy. (R)
@@ -619,6 +627,7 @@ Weaknesses and next steps should also be included.
 Scale: 1 – Not at all; 5 – Very much.
 
 **Locus of Control**
+
 1.
 a. Children get into trouble because their patents punish them too much.
 b. The trouble with most children nowadays is that their parents are too easy with
@@ -676,6 +685,7 @@ Score one point for response ‘a’ to questions: 1, 3, 4, 5, 10, 11, 12, and 1
 Score one point for response ‘b’ to questions: 2, 6, 7, 8, and 9.
 
 **Self-esteem**
+
 1. I feel that I am a person of worth, at least on an equal basis with others.
 2. I feel that I have a number of good qualities.
 3. All in all, I am inclined to feel that I am a failure. (R)
@@ -689,6 +699,7 @@ Score one point for response ‘b’ to questions: 2, 6, 7, 8, and 9.
 Scale: 1 – Strongly disagree; 7 – Strongly agree.
 
 **Self-efficacy**
+
 1. I am strong enough to overcome life's struggles.
 2. At root, I am a weak person. (R)
 3. I can handle the situations that life brings.
@@ -700,6 +711,7 @@ Scale: 1 – Strongly disagree; 7 – Strongly agree.
 Scale: 1 – Strongly disagree; 7 – Strongly agree.
 
 **Implicit beliefs**
+
 1. The kind of person someone is, is something very basic about them, and it can't be changed
 very much.
 2. People can do things differently, but the important parts of who they are can't really be
