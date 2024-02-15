@@ -1,5 +1,5 @@
 ---
-title: "You Best Believe: How Believing in Free Will is Enough to be More Satisfied at the Workplace"
+title: "How Believing in Free Will is Enough to Be More Satisfied at Work"
 author: Sami El Sabri and Liban Timir
 thanks: "Code and data are available at: https://github.com/samielsabri/freewill_analysis. SSRP replication available at: https://doi.org/10.48152/ssrp-hrv5-ck80"
 date: 02-13-2024
