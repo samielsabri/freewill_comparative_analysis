@@ -27,9 +27,10 @@ library(knitr)
 library(kableExtra)
 library(corrplot)
 library(countrycode)
+library(purrr)
 
 wvs_data_usa <- read_csv(here::here('outputs/data/wvs_data_usa.csv'))
-wvs_filtered <- read_csv("inputs/data/study_3/wvs_filtered.csv")
+wvs_filtered <- read_csv(here::here("inputs/data/study_3/wvs_filtered.csv"))
 satisfaction_data_usa <- read_csv(here::here('inputs/data/study_2/FW satisfaction-Study 2-data.csv'))
 satisfaction_data_usa_rel <- read_csv(here::here('outputs/data/satisfaction_data_usa_rel.csv'))
 
@@ -72,7 +73,7 @@ alpha_js1 <- alpha_js1$total$raw_alpha
 alpha_js1 <- round(alpha_js1,2)
 
 js2_items <- satisfaction_data_usa[, c("jobsat2_1", "jobsat2_2", "jobsat2_3", "jobsat2_4", "jobsat2_5")]
-alpha_js2 <- alpha(js2_items, , check.keys=TRUE)
+alpha_js2 <- alpha(js2_items, check.keys=TRUE)
 alpha_js2 <- alpha_js2$total$raw_alpha
 alpha_js2 <- round(alpha_js2,2)
 
@@ -423,6 +424,12 @@ As shown in @fig-corwvs, the results of the national-level World Values Survey a
 
 ### Comparison to other countries
 ```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: tbl-countries
+#| tbl-cap: Correlations Between Belief in Free Will and Job Satisfaction by Country in the World Values Survey
+
 wvs_summary_table <- wvs_filtered %>% group_by(country_code) %>% 
   summarize("FW Mean"=round(mean(freewill),2), n=n())
 
@@ -434,17 +441,46 @@ correlations <- wvs_filtered_2 %>%
 
 correlations <- wvs_filtered_2 %>%
   group_by(country_code) %>%
-  summarize(correlation = list(cor(freewill, js, use = "complete.obs"))) %>%
+  summarize(cor_stats = list(cor.test(freewill, js, use = "complete.obs")),
+            .groups = 'drop') %>%
   ungroup() %>%
-  mutate(correlation = map_dbl(correlation, ~ round(.x, 2)))
+  mutate(correlation = map_dbl(cor_stats, ~ round(.x$estimate, 2)),
+         p_value = map_dbl(cor_stats, ~ .x$p.value),
+         significance = case_when(
+           p_value <= 0.001 ~ "***",
+           p_value <= 0.01 ~ "**",
+           p_value <= 0.05 ~ "*",
+           TRUE ~ ""
+         ))
 
-final_table <- left_join(wvs_summary_table, correlations, by = "country_code")
-final_table <- final_table %>% mutate("Country Name" = countrycode(country_code, "iso3c", "country.name"))
-final_table <- final_table[c(5, 2, 4, 3)]
-final_table <- final_table %>% rename("Correlation" = correlation)
+final_table <- left_join(wvs_summary_table, correlations, by = "country_code") %>%
+  mutate(`Country Name` = countrycode(country_code, "iso3c", "country.name")) %>%
+  dplyr::select(`Country Name`, `FW Mean`, correlation, significance, n) %>%
+  rename(`Correlation` = correlation) %>%
+  mutate(Correlation = paste0(Correlation, significance)) %>% dplyr::select(-significance) %>% 
+  arrange(desc(`FW Mean`))
 final_table
+
+final_table %>%
+  kable("latex", booktabs = T) %>%
+  kable_styling(bootstrap_options = "striped") %>%
+  footnote(general ="FW Mean = National Average of the Belief in Free Will. \n n.s. p > .05. **p < .01. ***p < .001.") %>% 
+  row_spec(which(final_table$`Country Name` == "United States"), background = "#ADD8E6")
 ```
 
+In our analysis, we included data up until 2017 of the World Values Survey (2017), as opposed to only until 2008. This leads to slightly different results than in @feldman2017. Now, the correlations are statistically significant for all countries in the sample and we still observe that the belief in free will and job satisfaction varies similarly to the 2008 data. Compared to the 16 countries sampled in @feldman2017, the United States has a relatively high average belief in free will, coming second just after Mexico (@tbl-countries). While the correlation between the belief in free will and job satisfaction is not as high as in Mexico, it is still one of the stronger significant correlations in the sample of countries (*r* = 0.27, *p* <.001).
+
+### Demographic Factors
+
+```{r,include=FALSE,message=FALSE,warning=FALSE}
+anova_result <- aov(freewill ~ age_group, data =wvs_data_usa  )
+summary(anova_result)
+```
+Interestingly, there are virtually no differences in the average belief in free will between the different age groups surveyed (@fig-ageboxplotwvs in @sec-appendix). ANOVA confirmed that there are no significant differences (*F*(4,12809) = 1.032, *p* = 0.358). 
+
+
+
+\newpage
 
 
 # Discussion
@@ -465,8 +501,8 @@ Weaknesses and next steps should also be included.
 
 \appendix
 
-# Appendix {sec-appendix}
-## Step-Wise regression results {sec-apx-stepwise} 
+# Appendix {#sec-appendix}
+## Step-Wise regression results {#sec-apx-stepwise} 
 
 ```{r}
 #| eval: true
@@ -503,7 +539,43 @@ confint(step_model_t2, level = 0.95)
 
 ```
 
+## Demographic Boxplots for World Values Survey
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-ageboxplotwvs
+#| fig-cap: "Belief in Free Will by Age Group in WVS 1981-2022"
 
+wvs_data_usa$age_group <- cut(wvs_data_usa$Age,
+                    breaks = c(18, 30, 40, 50, 60, Inf),
+                    labels = c("18-30", "31-40", "41-50", "51-60", "Over 60"),
+                    right = FALSE)
+
+
+wvs_data_usa %>% drop_na(age_group) %>% ggplot(aes(x = age_group, y = freewill)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(
+       x = "Age Group",
+       y = "Belief in Free Will") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  + theme_minimal()
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-sexboxplotwvs
+#| fig-cap: "Belief in Free Will by Age Group in WVS 1981-2022"
+
+wvs_data_usa %>% drop_na(Sex) %>% ggplot(aes(x = factor(Sex, labels = c("Male", "Female")), y = freewill)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(
+       x = "Sex",
+       y = "Belief in Free Will") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  + theme_minimal()
+
+```
 
 
 
