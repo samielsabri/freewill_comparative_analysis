@@ -2,7 +2,7 @@
 # Purpose: Downloads and saves the data necessary
 # Authors: Sami El Sabri, Liban Timir
 # Date: 10 February 2023
-# Contact: sami.elsabri@mail.utoronto.ca
+# Contact: sami.elsabri@mail.utoronto.ca, liban.timir@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Download 1.3GB large file titled 'WVS TimeSeries 1981 2022 Csv v4 0.zip' from 
 # https://www.worldvaluessurvey.org/WVSDocumentationWVL.jsp

@@ -2,7 +2,7 @@
 # Purpose: Cleans the raw data provided by Feldman et al. (2017) and by WVS
 # Authors: Sami El Sabri, Liban Timir
 # Date: 10 February 2023
-# Contact: sami.elsabri@mail.utoronto.ca
+# Contact: sami.elsabri@mail.utoronto.ca, liban.timir@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: 01-download_data.R
 

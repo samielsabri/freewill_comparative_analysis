@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Tests the cleaned free will paper dataset
+# Purpose: Tests the cleaned data provided by Feldman et al. (2017) and by WVS
 # Author: Sami El Sabri & Liban Timir
 # Date: 15 February 2024
 # Contact: sami.elsabri@mail.utoronto.ca, liban.timir@mail.utoronto.ca
